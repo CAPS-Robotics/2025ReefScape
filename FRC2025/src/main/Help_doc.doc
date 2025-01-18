@@ -1,0 +1,16 @@
+CAN IDs
+    Front left module 
+        steering motor -> 2
+        drive motor -> 3
+
+    Front right module 
+        steering motor -> 4
+        drive motor -> 5
+
+    back left module 
+        steering motor -> 6
+        drive motor -> 7
+        
+    back right module 
+        steering motor -> 8
+        drive motor -> 9
