@@ -32,6 +32,7 @@ public class SwerveModule {
         moduleState = new SwerveModuleState();
 
         pidController = new PIDController(0.03, 0, 0);
+        pidController.enableContinuousInput(0, 1);
 
 
         };
