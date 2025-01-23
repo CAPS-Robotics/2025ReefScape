@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -23,22 +24,28 @@ import edu.wpi.first.wpilibj.AnalogEncoder;
 /** Add your docs here. */
 public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
-    public static AnalogEncoder frontLeftEncoder = new AnalogEncoder(0);
-    AnalogEncoder frontRightEncoder = new AnalogEncoder(1);
-    AnalogEncoder backLeftEncoder = new AnalogEncoder(3);
-    AnalogEncoder backRightEncoder = new AnalogEncoder(2);
+    // public static AnalogEncoder frontLeftEncoder = new AnalogEncoder(0);
+    // AnalogEncoder frontRightEncoder = new AnalogEncoder(1);
+    // AnalogEncoder backLeftEncoder = new AnalogEncoder(3);
+    // AnalogEncoder backRightEncoder = new AnalogEncoder(2);
 
 
 
-    SwerveModule frontLeftModule = new SwerveModule(3, 2);
-    SwerveModule frontRightModule = new SwerveModule(5, 4);
-    SwerveModule backLeftModule = new SwerveModule(7, 6);
-    SwerveModule backRightModule = new SwerveModule(8, 9);
+    SwerveModule frontRightModule = new SwerveModule(3, 2,0);
+    SwerveModule frontLeftModule = new SwerveModule(5, 4,1);
+    SwerveModule backRightModule = new SwerveModule(9, 8,2);
+    SwerveModule backLeftModule = new SwerveModule(7, 6, 3);
 
     Translation2d frontLeft = new Translation2d((Constants.chasisWidth/2), (Constants.chasisLength/2));
     Translation2d frontRight = new Translation2d((Constants.chasisWidth/2), (-Constants.chasisLength/2));
     Translation2d backLeft = new Translation2d((-Constants.chasisWidth/2), (Constants.chasisLength/2));
     Translation2d backRight = new Translation2d((-Constants.chasisWidth/2), (-Constants.chasisLength/2));
+
+    public static Rotation2d FLCurrentAngle;
+    Rotation2d FRCurrentAngle;
+    Rotation2d BLCurrentAngle;
+    Rotation2d BRCurrentAngle;
+
 
     SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeft, frontRight, backLeft, backRight);
 
@@ -46,6 +53,8 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
     public SwerveDriveTrainSubsystem(){
         
+       
+
         double moduleStateLog[]=
         {
             frontLeftModule.getModuleState().angle.getRadians(), // Front Left Module angle
@@ -81,12 +90,24 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
     public void driveSwerve(XboxController drivController){
         // System.out.println("Swerve Drive");
 
+        FLCurrentAngle = new Rotation2d(frontLeftModule.encoder.get()/1.0*2*Math.PI);
+        FRCurrentAngle = new Rotation2d(frontRightModule.encoder.get()/1.0*2*Math.PI);
+        BLCurrentAngle = new Rotation2d(backLeftModule.encoder.get()/1.0*2*Math.PI);
+        BRCurrentAngle = new Rotation2d(backRightModule.encoder.get()/1.0*2*Math.PI);
+
+
+
+        // frontLeftModule.moduleState.optimize(FLCurrentAngle);
+        // frontRightModule.moduleState.optimize(FRCurrentAngle);
+        // backLeftModule.moduleState.optimize(BLCurrentAngle);
+        // backRightModule.moduleState.optimize(BRCurrentAngle);
+
         double velocityX = -1 * drivController.getLeftY();
-        double VelocityY = drivController.getLeftX();
+        double velocityY = drivController.getLeftX();
         double omega = drivController.getRightX();
 
         if(Math.abs(velocityX) < 0.1) velocityX = 0;
-        if(Math.abs(VelocityY) < 0.1) VelocityY = 0;
+        if(Math.abs(velocityY) < 0.1) velocityY = 0;
         if(Math.abs(omega) < 0.1) omega = 0;
    
 
@@ -94,37 +115,21 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         // System.out.println("Velocity Y: "+VelocityY);
         // System.out.println("Omega: "+omega);
 
-        chassisSpeeds = new ChassisSpeeds(velocityX, 0, 0);
-
-        // System.out.println("Chasis Speed: "+chassisSpeeds);
+        chassisSpeeds = new ChassisSpeeds(velocityX,0, 0);
 
         setSpeed(chassisSpeeds);
-
-        frontRightModule.driveMotor.set(0);
-        frontRightModule.steeringMotor.set(0);
-        backLeftModule.driveMotor.set(0);
-        backLeftModule.steeringMotor.set(0);
-        backRightModule.driveMotor.set(0);
-        backRightModule.steeringMotor.set(0);
-
-
-        System.out.println("Front Left Angle: " + frontLeftEncoder.get());
-        // System.out.println("Front Back Angle: " + frontRightEncoder.get());
-        // System.out.println("Back Left Angle: " + backLeftEncoder.get());
-        // System.out.println("Front Left Angle: " + backRightEncoder.get());
-
-
 
     }
 
     public void setSpeed(ChassisSpeeds speed){
-        System.out.println("Setting states " );
+        // System.out.println("Setting states " );
+        System.out.println("Module Angle:" + backRightModule.encoder.get());
         SwerveModuleState states[] = kinematics.toSwerveModuleStates(speed);
-        System.out.println("Setting states "+states );
+        // System.out.println("Setting states "+states );
         frontLeftModule.setModuleState(states[0]);
-    //     frontRightModule.setModuleState(states[1]);
-    //     backLeftModule.setModuleState(states[2]);
-    //     backRightModule.setModuleState(states[3]);
+        // frontRightModule.setModuleState(states[1]);
+        // backLeftModule.setModuleState(states[2]);
+        // backRightModule.setModuleState(states[3]);
     }
 
 
