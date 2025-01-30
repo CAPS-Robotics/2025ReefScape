@@ -67,9 +67,13 @@ public class SwerveModule {
         
         
         
-        double encoderValue = 1 - this.encoder.get();
-        // System.out.println("EncoderValue: "+ encoderValue);
-        double endpoint = moduleState.angle.getRadians()/(Math.PI*2);
+        double encoderValue = (this.encoder.get()+0.17);
+        System.out.println("Encoder Value Before:" + encoderValue);
+        if(encoderValue >1){
+            encoderValue -= 1;
+        }
+        System.out.println("EncoderValue: "+ encoderValue);
+        double endpoint = (moduleState.angle.getRadians()/(Math.PI*2));
         System.out.println("Endpoint: "+endpoint);
         double pidSpeed = pidController.calculate(encoderValue, endpoint);
         System.out.println("PID speed: "+pidSpeed);

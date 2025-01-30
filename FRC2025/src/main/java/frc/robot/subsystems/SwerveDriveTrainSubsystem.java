@@ -103,7 +103,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         // backRightModule.moduleState.optimize(BRCurrentAngle);
 
         double velocityX = -1 * drivController.getLeftY();
-        double velocityY = drivController.getLeftX();
+        double velocityY = -1 *drivController.getLeftX();
         double omega = drivController.getRightX();
 
         if(Math.abs(velocityX) < 0.1) velocityX = 0;
@@ -115,7 +115,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         // System.out.println("Velocity Y: "+VelocityY);
         // System.out.println("Omega: "+omega);
 
-        chassisSpeeds = new ChassisSpeeds(velocityX,0, 0);
+        chassisSpeeds = new ChassisSpeeds(velocityX,velocityY, 0);
 
         setSpeed(chassisSpeeds);
 
