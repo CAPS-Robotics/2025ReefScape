@@ -21,11 +21,14 @@ public class SwerveModule {
     public SwerveModuleState moduleState;
     public AnalogEncoder encoder;
     public PIDController pidController; 
+    public double encoderValue;
+    public double encoderOffset;
+    private int invert = 1;
 
 
  
 
-    public SwerveModule(int driveMotorPort,int steeringMotorPort, int encoderPort)
+    public SwerveModule(int driveMotorPort,int steeringMotorPort, int encoderPort, double offset, boolean inverted)
     {
 
         //Motors
@@ -40,9 +43,21 @@ public class SwerveModule {
 
 
         //PID 
+        //original 3
         pidController = new PIDController(3, 0, 0);
         pidController.enableContinuousInput(0, 1);
         pidController.setTolerance(0.001);
+
+        //Offset
+        encoderOffset = offset;
+
+        //Invert
+        if (inverted == true){
+
+            invert = -1;
+        }
+
+
 
 
    //GR - 150/7:1
@@ -50,6 +65,36 @@ public class SwerveModule {
 
 
     };
+
+    public SwerveModule(int driveMotorPort,int steeringMotorPort, int encoderPort, double offset)
+    {
+
+        //Motors
+        steeringMotor = new SparkMax(steeringMotorPort, MotorType.kBrushless);
+        driveMotor = new SparkFlex(driveMotorPort, MotorType.kBrushless);
+
+        //Module State
+        moduleState = new SwerveModuleState();
+       
+        //Encoder
+        encoder = new AnalogEncoder(encoderPort);
+
+
+        //PID 
+        //original 3
+        pidController = new PIDController(3, 0, 0);
+        pidController.enableContinuousInput(0, 1);
+        pidController.setTolerance(0.001);
+
+        //Offset
+        encoderOffset = offset;
+
+   //GR - 150/7:1
+         
+
+
+    };
+
 
     public SwerveModuleState getModuleState(){
         return moduleState;
@@ -67,17 +112,23 @@ public class SwerveModule {
         
         
         
-        double encoderValue = (this.encoder.get()+0.17);
-        System.out.println("Encoder Value Before:" + encoderValue);
-        if(encoderValue >1){
+        encoderValue = (this.encoder.get()+encoderOffset);
+        if(encoderValue > 1){
             encoderValue -= 1;
         }
-        System.out.println("EncoderValue: "+ encoderValue);
+
+        if (encoderValue < 0 ){
+            encoderValue += 1;
+        }
         double endpoint = (moduleState.angle.getRadians()/(Math.PI*2));
-        System.out.println("Endpoint: "+endpoint);
         double pidSpeed = pidController.calculate(encoderValue, endpoint);
+        System.out.println();
+        System.out.println("Encoder Value: "+encoderValue);
+        System.out.println("Endpoint: "+endpoint);
         System.out.println("PID speed: "+pidSpeed);
         System.out.println("Error Tolerance: "+ pidController.getErrorTolerance());
+        System.out.println();
+
         
         double errorValue = 1 - Math.abs(pidController.getError());
 
@@ -85,7 +136,7 @@ public class SwerveModule {
             pidSpeed = 0;
         }
         // System.out.println("Error: "+ errorValue);
-        steeringMotor.set(pidSpeed);
+        steeringMotor.set(invert*pidSpeed);
        
         
     }

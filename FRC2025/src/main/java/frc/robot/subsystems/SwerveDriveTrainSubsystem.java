@@ -24,17 +24,13 @@ import edu.wpi.first.wpilibj.AnalogEncoder;
 /** Add your docs here. */
 public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
-    // public static AnalogEncoder frontLeftEncoder = new AnalogEncoder(0);
-    // AnalogEncoder frontRightEncoder = new AnalogEncoder(1);
-    // AnalogEncoder backLeftEncoder = new AnalogEncoder(3);
-    // AnalogEncoder backRightEncoder = new AnalogEncoder(2);
+    SwerveModule frontRightModule = new SwerveModule(3, 2,0, -0.21, true);
+    SwerveModule frontLeftModule = new SwerveModule(5, 4,1, 0.15);
+    SwerveModule backRightModule = new SwerveModule(7, 6,3, 0.07);
+    SwerveModule backLeftModule = new SwerveModule(9, 8, 2, 0.25, true);
 
 
-
-    SwerveModule frontRightModule = new SwerveModule(3, 2,0);
-    SwerveModule frontLeftModule = new SwerveModule(5, 4,1);
-    SwerveModule backRightModule = new SwerveModule(9, 8,2);
-    SwerveModule backLeftModule = new SwerveModule(7, 6, 3);
+    
 
     Translation2d frontLeft = new Translation2d((Constants.chasisWidth/2), (Constants.chasisLength/2));
     Translation2d frontRight = new Translation2d((Constants.chasisWidth/2), (-Constants.chasisLength/2));
@@ -123,13 +119,13 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
     public void setSpeed(ChassisSpeeds speed){
         // System.out.println("Setting states " );
-        System.out.println("Module Angle:" + backRightModule.encoder.get());
         SwerveModuleState states[] = kinematics.toSwerveModuleStates(speed);
+
         // System.out.println("Setting states "+states );
         frontLeftModule.setModuleState(states[0]);
-        // frontRightModule.setModuleState(states[1]);
-        // backLeftModule.setModuleState(states[2]);
-        // backRightModule.setModuleState(states[3]);
+        frontRightModule.setModuleState(states[1]);
+        backLeftModule.setModuleState(states[2]);
+        backRightModule.setModuleState(states[3]);
     }
 
 
