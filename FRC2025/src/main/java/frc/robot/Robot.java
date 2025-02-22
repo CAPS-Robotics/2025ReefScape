@@ -4,9 +4,18 @@
 
 package frc.robot;
 
+
+
+import edu.wpi.first.networktables.DoubleArraySubscriber;
+import edu.wpi.first.networktables.DoubleArrayTopic;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Camera;
+import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.MecanumDriveTrainSubsystem;
 import frc.robot.subsystems.SwerveDriveTrainSubsystem;
 
@@ -16,13 +25,21 @@ import frc.robot.subsystems.SwerveDriveTrainSubsystem;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
+public class Robot extends TimedRobot { 
 
- public static MecanumDriveTrainSubsystem mecanumTrain = new MecanumDriveTrainSubsystem();
- public static SwerveDriveTrainSubsystem swerveTrain = new SwerveDriveTrainSubsystem();
+  private Command m_autonomousCommand;
+  public static MecanumDriveTrainSubsystem mecanumTrain = new MecanumDriveTrainSubsystem();
+  public static SwerveDriveTrainSubsystem swerveTrain = new SwerveDriveTrainSubsystem();
+  public static ElevatorSubsystem elevator = new ElevatorSubsystem();
+  public static ClimbSubsystem climb = new ClimbSubsystem();
+  public static Camera camera = new Camera("Front Camera");
+
+
+  
+  
+
  // public static RobotContainer robotContainer = new RobotContainer();
- public static IO io = new IO();
+  public static IO io = new IO();
  // private RobotContainer m_robotContainer;
 
   /**

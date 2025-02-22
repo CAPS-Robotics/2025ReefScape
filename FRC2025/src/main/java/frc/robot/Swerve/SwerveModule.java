@@ -24,11 +24,16 @@ public class SwerveModule {
     public double encoderValue;
     public double encoderOffset;
     private int invert = 1;
+    private int reversed = 1;
+    public double endpoint;
+    public double pidSpeed;
+    public double errorValue;
+   
 
 
  
 
-    public SwerveModule(int driveMotorPort,int steeringMotorPort, int encoderPort, double offset, boolean inverted)
+    public SwerveModule(int driveMotorPort,int steeringMotorPort, int encoderPort, double offset, boolean inverted, boolean reverse)
     {
 
         //Motors
@@ -57,7 +62,10 @@ public class SwerveModule {
             invert = -1;
         }
 
+        if (reverse == true){
 
+            reversed = -1;
+        }
 
 
    //GR - 150/7:1
@@ -72,6 +80,9 @@ public class SwerveModule {
         //Motors
         steeringMotor = new SparkMax(steeringMotorPort, MotorType.kBrushless);
         driveMotor = new SparkFlex(driveMotorPort, MotorType.kBrushless);
+
+        
+
 
         //Module State
         moduleState = new SwerveModuleState();
@@ -108,7 +119,7 @@ public class SwerveModule {
 
         // System.out.println("Module Angle: "+ SwerveDriveTrainSubsystem.FLCurrentAngle);
         
-        driveMotor.set(moduleState.speedMetersPerSecond);
+        driveMotor.set(reversed*moduleState.speedMetersPerSecond*0.5);
         
         
         
@@ -116,27 +127,18 @@ public class SwerveModule {
         if(encoderValue > 1){
             encoderValue -= 1;
         }
-
         if (encoderValue < 0 ){
             encoderValue += 1;
         }
-        double endpoint = (moduleState.angle.getRadians()/(Math.PI*2));
-        double pidSpeed = pidController.calculate(encoderValue, endpoint);
-        System.out.println();
-        System.out.println("Encoder Value: "+encoderValue);
-        System.out.println("Endpoint: "+endpoint);
-        System.out.println("PID speed: "+pidSpeed);
-        System.out.println("Error Tolerance: "+ pidController.getErrorTolerance());
-        System.out.println();
-
-        
-        double errorValue = 1 - Math.abs(pidController.getError());
+        endpoint = (moduleState.angle.getRadians()/(Math.PI*2));
+        pidSpeed = pidController.calculate(encoderValue, endpoint);    
+        errorValue = 1 - Math.abs(pidController.getError());
 
         if (errorValue <= pidController.getErrorTolerance()){
             pidSpeed = 0;
         }
         // System.out.println("Error: "+ errorValue);
-        steeringMotor.set(invert*pidSpeed);
+        steeringMotor.set(invert*pidSpeed*0.5);
        
         
     }

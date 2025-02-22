@@ -11,23 +11,24 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.Swerve.SwerveModule;
-import edu.wpi.first.wpilibj.AnalogEncoder;
-
 
 
 /** Add your docs here. */
 public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
-    SwerveModule frontRightModule = new SwerveModule(3, 2,0, -0.21, true);
-    SwerveModule frontLeftModule = new SwerveModule(5, 4,1, 0.15);
-    SwerveModule backRightModule = new SwerveModule(7, 6,3, 0.07);
-    SwerveModule backLeftModule = new SwerveModule(9, 8, 2, 0.25, true);
+    SwerveModule frontRightModule = new SwerveModule(Constants.kFrontRightDrive, Constants.kFrontRightSteering, Constants.kFrontRightEncoder, Constants.kFrontRightEncoderOffset, true, false);
+    SwerveModule frontLeftModule = new SwerveModule(Constants.kFrontLeftDrive, Constants.kFrontLeftSteering,Constants.kFrontLeftEncoder, Constants.kFrontLeftEncoderOffset);
+    SwerveModule backRightModule = new SwerveModule(Constants.kBackRightDrive, Constants.kBackRightSteering,Constants.kBackRightEncoder, Constants.kBackRightEncoderOffset);
+    SwerveModule backLeftModule = new SwerveModule(Constants.kBackLeftDrive, Constants.kBackLeftSteering, Constants.kBackLeftEncoder, Constants.kBackLeftEncoderOffset, true, true);
+
+    // SwerveModuleState frontLeftOptimized = frontLeftModule.moduleState.optimize(frontLeftModule.moduleState.angle);
 
 
     
@@ -37,7 +38,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
     Translation2d backLeft = new Translation2d((-Constants.chasisWidth/2), (Constants.chasisLength/2));
     Translation2d backRight = new Translation2d((-Constants.chasisWidth/2), (-Constants.chasisLength/2));
 
-    public static Rotation2d FLCurrentAngle;
+    Rotation2d FLCurrentAngle;
     Rotation2d FRCurrentAngle;
     Rotation2d BLCurrentAngle;
     Rotation2d BRCurrentAngle;
@@ -83,7 +84,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
     }
 
-    public void driveSwerve(XboxController drivController){
+    public void driveSwerve(Joystick drivController){
         // System.out.println("Swerve Drive");
 
         FLCurrentAngle = new Rotation2d(frontLeftModule.encoder.get()/1.0*2*Math.PI);
@@ -98,20 +99,20 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         // backLeftModule.moduleState.optimize(BLCurrentAngle);
         // backRightModule.moduleState.optimize(BRCurrentAngle);
 
-        double velocityX = -1 * drivController.getLeftY();
-        double velocityY = -1 *drivController.getLeftX();
-        double omega = drivController.getRightX();
-
+        double velocityX = -1 * drivController.getX();
+        double velocityY = -1 *drivController.getY();
+        double omega = drivController.getZ();
         if(Math.abs(velocityX) < 0.1) velocityX = 0;
         if(Math.abs(velocityY) < 0.1) velocityY = 0;
         if(Math.abs(omega) < 0.1) omega = 0;
+
    
 
         // System.out.println("Velocity X: " + velocityX);
         // System.out.println("Velocity Y: "+VelocityY);
         // System.out.println("Omega: "+omega);
 
-        chassisSpeeds = new ChassisSpeeds(velocityX,velocityY, 0);
+        chassisSpeeds = new ChassisSpeeds(velocityX,velocityY, omega);
 
         setSpeed(chassisSpeeds);
 
@@ -126,6 +127,14 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         frontRightModule.setModuleState(states[1]);
         backLeftModule.setModuleState(states[2]);
         backRightModule.setModuleState(states[3]);
+
+        // System.out.println();
+        // System.out.println("Encoder Value: "+backLeftModule.encoderValue);
+        // System.out.println("Endpoint: "+backLeftModule.endpoint);
+        // System.out.println("PID speed: "+backLeftModule.pidSpeed);
+        // System.out.println("Error Tolerance: "+ backLeftModule.pidController.getErrorTolerance());
+        // System.out.println();
+
     }
 
 
