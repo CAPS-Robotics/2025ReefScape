@@ -19,7 +19,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   public SparkFlex elevatorMotor = new SparkFlex(Constants.kElevatorMotor, MotorType.kBrushless);
 
   public RelativeEncoder elevatorMotorEncoder = elevatorMotor.getEncoder();
-  public Servo bucketServo = new Servo(0);
+  public Servo bucketServo = new Servo(3);
   
   //figure out distance of one rotation of the axle
 
@@ -37,6 +37,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorMotorEncoder.setPosition(0);
     setDefaultCommand(new RunCommand(()-> Robot.elevator.closedServo(), this ));
     setDefaultCommand(new RunCommand(()-> Robot.elevator.getEncoder(), this ));
+    setDefaultCommand(new RunCommand(()-> Robot.elevator.setSpeed(0), this ));
 
 
     
@@ -100,11 +101,17 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void lower(){
 
-      setSpeed(-1);
+      setSpeed(-.25);
       System.out.println("Down");
 
     }
 
+    public void stop(){
+
+      setSpeed(0);
+      System.out.println("stop");
+
+    }
 
     public void setSpeed(double speed){
       double motorSpeed = Constants.kElevatorDampner*speed;
@@ -122,6 +129,8 @@ public class ElevatorSubsystem extends SubsystemBase {
           elevatorMotor.set(motorSpeed);
         }
 
+      } else if (motorSpeed == 0) {
+        elevatorMotor.set(0.025);
       }
 
     }
@@ -129,15 +138,17 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void releaseServo(){
 
-      bucketServo.set(1);
-      bucketServo.setAngle(90);
+      // bucketServo.set(1);
+      bucketServo.setAngle(60);
+
+      System.out.println(bucketServo.get());
       System.out.println("Released");
 
     }
 
     public void closedServo(){
-      bucketServo.set(0);
-      bucketServo.set(0);
+      // bucketServo.setAngle(90);
+      bucketServo.setAngle(180);
     }
   @Override
   public void periodic() {

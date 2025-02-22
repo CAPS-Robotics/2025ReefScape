@@ -7,7 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.LowerElevator;
 import frc.robot.commands.MMRCommands;
+import frc.robot.commands.RaiseElevator;
 
 /** Add your docs here. */
 public class IO {
@@ -20,10 +22,11 @@ public class IO {
     public JoystickButton ServoButton = new JoystickButton(driveController, 1);
 
 
-    public JoystickButton raiseButton = new JoystickButton(controlController, 1);
-    public JoystickButton lowerButton = new JoystickButton(controlController, 2);
+    public JoystickButton A_raiseButton = new JoystickButton(controlController, 1);
+    public JoystickButton B_lowerButton = new JoystickButton(controlController, 2);
 
     public JoystickButton xButton = new JoystickButton(controlController, 3);
+    public JoystickButton closeButton = new JoystickButton(controlController, 4);
 
     public JoystickButton yButton = new JoystickButton(driveController, 4);
     public JoystickButton zButton = new JoystickButton(driveController, 3);
@@ -39,9 +42,14 @@ public class IO {
         bButton.onTrue(MMRCommands.raiseClimb);
 
 
-        lowerButton.onTrue(MMRCommands.lowerElevator);
-        raiseButton.onTrue(MMRCommands.raiseElevator);
+        // B_lowerButton.whileTrue(MMRCommands.lowerElevator);
+        // A_raiseButton.whileTrue(MMRCommands.raiseElevator);
+        closeButton.onTrue(MMRCommands.closeServo);
+        B_lowerButton.whileTrue(new LowerElevator(Robot.elevator));
+        A_raiseButton.whileTrue(new RaiseElevator(Robot.elevator));
         
+
     }
+
 
 }
