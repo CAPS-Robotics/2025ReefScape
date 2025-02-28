@@ -18,6 +18,7 @@ import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.MecanumDriveTrainSubsystem;
 import frc.robot.subsystems.SwerveDriveTrainSubsystem;
+import frc.robot.commands.Autos;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -26,7 +27,8 @@ import frc.robot.subsystems.SwerveDriveTrainSubsystem;
  * project.
  */
 public class Robot extends TimedRobot { 
-
+  int x = 0;
+  public Autos auto = new Autos();
   private Command m_autonomousCommand;
   public static MecanumDriveTrainSubsystem mecanumTrain = new MecanumDriveTrainSubsystem();
   public static SwerveDriveTrainSubsystem swerveTrain = new SwerveDriveTrainSubsystem();
@@ -89,7 +91,12 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+   
+    
+    auto.firstAuto();
+
+  }
 
   @Override
   public void teleopInit() {

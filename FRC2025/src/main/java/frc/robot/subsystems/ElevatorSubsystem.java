@@ -37,9 +37,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorMotorEncoder.setPosition(0);
     setDefaultCommand(new RunCommand(()-> Robot.elevator.closedServo(), this ));
     setDefaultCommand(new RunCommand(()-> Robot.elevator.getEncoder(), this ));
-    setDefaultCommand(new RunCommand(()-> Robot.elevator.setSpeed(0), this ));
-
-
+    setDefaultCommand(new RunCommand(()-> Robot.elevator.setSpeed(0), this));
     
 
   }
@@ -90,7 +88,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
     public void raise(){
 
-      setSpeed(1);
+      setSpeed(0.25);
       System.out.println("UP");
       System.out.println("Motor Voltage:"+ elevatorMotor.getBusVoltage());
       System.out.println("Motor Current:"+ elevatorMotor.getOutputCurrent());
@@ -101,7 +99,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void lower(){
 
-      setSpeed(-.25);
+      setSpeed(-0.25);
       System.out.println("Down");
 
     }
@@ -109,28 +107,31 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void stop(){
 
       setSpeed(0);
-      System.out.println("stop");
+      System.out.println("Stop");
 
     }
 
     public void setSpeed(double speed){
       double motorSpeed = Constants.kElevatorDampner*speed;
+      
       if(motorSpeed > 0){
         if(toplimitSwitch.get()){
-          elevatorMotor.set(0.01);
+          System.out.println("Top Limit Switch Pressed");
+          elevatorMotor.set(0);
         }else{
           elevatorMotor.set(motorSpeed);
         }
       }else if (motorSpeed < 0){
 
         if(bottomlimitSwitch.get()){
+          System.out.println("Bottom Limit Switch Pressed");
           elevatorMotor.set(0);
         }else{
           elevatorMotor.set(motorSpeed);
         }
 
       } else if (motorSpeed == 0) {
-        elevatorMotor.set(0.025);
+        elevatorMotor.set(0);
       }
 
     }
@@ -138,7 +139,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void releaseServo(){
 
-      // bucketServo.set(1);
       bucketServo.setAngle(60);
 
       System.out.println(bucketServo.get());
@@ -147,7 +147,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void closedServo(){
-      // bucketServo.setAngle(90);
       bucketServo.setAngle(180);
     }
   @Override
