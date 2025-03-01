@@ -43,55 +43,63 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
 
-  // public void raiseTo(double height){
+  public void raiseTo(double endpointRotations){
     
-  //   heightToraise = height;
+    ;
 
-  //   currentRotations = elevatorMotorEncoder.getPosition();
-  //   // System.out.println("Encoder Value: "+ currentRotations);
+    currentRotations = elevatorMotorEncoder.getPosition();
+    // System.out.println("Encoder Value: "+ currentRotations);
 
-  //   double numRotationRequired = height/distancePerRotation;
-  //   // System.out.println("numRotationsRequired: " + numRotationRequired);
+    double numRotationRequired = endpointRotations;
+    // System.out.println("numRotationsRequired: " + numRotationRequired);
 
-  //   // Vortex RPM = 6784 RPM
-  //   // Vortex Gearbox = 20:1
-  //   // 6784:339.2
+    // Vortex RPM = 6784 RPM
+    // Vortex Gearbox = 20:1
+    // 6784:339.2
 
-  //     if (numRotationRequired <= currentRotations){
-  //       setSpeed(0);
-  //       if(currentRotations >= numRotationRequired+10)
-  //         {
-  //           setSpeed(-0.05);
-  //         }else{
-  //           setSpeed(0.1);
-  //         }
-  //     }else{
-  //       setSpeed(1);
-  //     }
+    //L2 -- 25
+    //L3 -- 46 
+    //L4 -- 78 
 
-      
+      if (numRotationRequired <= currentRotations){
+        setSpeed(0.0275);
+        // if(currentRotations >= numRotationRequired+10)
+        //   {
+        //     setSpeed(-0.05);
+        //   }else{
+        //     setSpeed(0.0275);
+        //   }
+      }else{
+        setSpeed(1);
+      }
 
-
-  //   }
+System.out.println("Position!!!!!!!!!!!!!!!!");
+    }
   
     public void zero(){
+      if(bottomlimitSwitch.get()){
+        setSpeed(-1);;
 
-      elevatorMotorEncoder.setPosition(0);
+      }else{
+      
+        elevatorMotor.set(0);
+        elevatorMotorEncoder.setPosition(0);
+      }
 
     }
 
 
-    public double getEncoder(){
+    public void getEncoder(){
 
-     return elevatorMotorEncoder.getPosition();
+     System.out.println("Encoder Value: "+elevatorMotorEncoder.getPosition());
 
     }
     public void raise(){
 
-      setSpeed(0.25);
-      System.out.println("UP");
-      System.out.println("Motor Voltage:"+ elevatorMotor.getBusVoltage());
-      System.out.println("Motor Current:"+ elevatorMotor.getOutputCurrent());
+      setSpeed(1);
+      // // System.out.println("UP");
+      // System.out.println("Motor Voltage:"+ elevatorMotor.getBusVoltage());
+      // System.out.println("Motor Current:"+ elevatorMotor.getOutputCurrent());
 
 
     }
@@ -99,7 +107,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void lower(){
 
-      setSpeed(-0.25);
+      setSpeed(-1);
       System.out.println("Down");
 
     }
@@ -117,22 +125,30 @@ public class ElevatorSubsystem extends SubsystemBase {
       if(motorSpeed > 0){
         if(toplimitSwitch.get()){
           System.out.println("Top Limit Switch Pressed");
-          elevatorMotor.set(0);
+          elevatorMotor.set(0.0275);
         }else{
           elevatorMotor.set(motorSpeed);
         }
       }else if (motorSpeed < 0){
 
         if(bottomlimitSwitch.get()){
-          System.out.println("Bottom Limit Switch Pressed");
-          elevatorMotor.set(0);
-        }else{
           elevatorMotor.set(motorSpeed);
+
+        }else{
+        
+          elevatorMotor.set(0);
+          System.out.println("Bottom Limit Switch Pressed");
+          elevatorMotorEncoder.setPosition(0);
+
+
         }
 
       } else if (motorSpeed == 0) {
-        elevatorMotor.set(0);
+        elevatorMotor.set(0.0275);
       }
+
+      currentRotations = elevatorMotorEncoder.getPosition();
+      System.out.println("Encoder Value: "+currentRotations);
 
     }
 
@@ -148,6 +164,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void closedServo(){
       bucketServo.setAngle(180);
+
     }
   @Override
   public void periodic() {

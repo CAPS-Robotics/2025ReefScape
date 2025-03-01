@@ -40,10 +40,10 @@ public final class Constants {
 
 
     //Elevator Position(rotations)
-    public static final double level_1 = 0;
-    public static final double level_2 = 0;
-    public static final double level_3 = 0;
-    public static final double level_4 = 0;
+    public static final double kLevel_1 = 0;
+    public static final double kLevel_2 = 28;
+    public static final double kLevel_3 = 49;
+    public static final double kLevel_4 = 80;
 
 
 
@@ -75,7 +75,7 @@ public final class Constants {
 
     //Dampners 
     public static final double kSwerveDampner = 0.5;
-    public static final double kElevatorDampner = 0.2;
+    public static final double kElevatorDampner = 0.5;
     public static final double kClimbDampner = 0.5;
 
 
