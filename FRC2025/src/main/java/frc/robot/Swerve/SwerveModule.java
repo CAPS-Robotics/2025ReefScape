@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 import com.revrobotics.spark.SparkFlex;
@@ -19,6 +20,7 @@ public class SwerveModule {
     public SparkMax steeringMotor;
     public SparkFlex driveMotor;
     public SwerveModuleState moduleState;
+    public SwerveModulePosition modulePosition;
     public AnalogEncoder encoder;
     public PIDController pidController; 
     public double encoderValue;
@@ -42,6 +44,8 @@ public class SwerveModule {
 
         //Module State
         moduleState = new SwerveModuleState();
+        modulePosition = new SwerveModulePosition();
+        
        
         //Encoder
         encoder = new AnalogEncoder(encoderPort);

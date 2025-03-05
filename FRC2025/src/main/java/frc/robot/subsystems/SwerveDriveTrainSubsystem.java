@@ -4,13 +4,23 @@
 
 package frc.robot.subsystems;
 
-
-
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.Kinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -23,14 +33,21 @@ import frc.robot.Swerve.SwerveModule;
 /** Add your docs here. */
 public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
+
     SwerveModule frontRightModule = new SwerveModule(Constants.kFrontRightDrive, Constants.kFrontRightSteering, Constants.kFrontRightEncoder, Constants.kFrontRightEncoderOffset, true, false);
     SwerveModule frontLeftModule = new SwerveModule(Constants.kFrontLeftDrive, Constants.kFrontLeftSteering,Constants.kFrontLeftEncoder, Constants.kFrontLeftEncoderOffset);
     SwerveModule backRightModule = new SwerveModule(Constants.kBackRightDrive, Constants.kBackRightSteering,Constants.kBackRightEncoder, Constants.kBackRightEncoderOffset);
     SwerveModule backLeftModule = new SwerveModule(Constants.kBackLeftDrive, Constants.kBackLeftSteering, Constants.kBackLeftEncoder, Constants.kBackLeftEncoderOffset, true, true);
 
     // SwerveModuleState frontLeftOptimized = frontLeftModule.moduleState.optimize(frontLeftModule.moduleState.angle);
+    SwerveModuleState states[];
+    SwerveModulePosition position[];
 
 
+    AHRS Navx = new AHRS(NavXComType.kMXP_SPI);
+    Rotation2d Yaw;
+
+    Pose2d robotPose2d = new Pose2d();
     
 
     Translation2d frontLeft = new Translation2d((Constants.chasisWidth/2), (Constants.chasisLength/2));
@@ -43,13 +60,65 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
     Rotation2d BLCurrentAngle;
     Rotation2d BRCurrentAngle;
 
-
     SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeft, frontRight, backLeft, backRight);
+
+    SwerveDrivePoseEstimator swerveDrivePoseEstimator; 
 
     ChassisSpeeds chassisSpeeds; 
 
-    public SwerveDriveTrainSubsystem(){
+    
+
+
+
+
+
+
+
+
+
+
+    public SwerveDriveTrainSubsystem(){   
         
+         // All other subsystem initialization
+    // ...
+
+    // Load the RobotConfig from the GUI settings. You should probably
+    // store this in your Constants file
+    RobotConfig config;
+    try{
+      config = RobotConfig.fromGUISettings();
+    } catch (Exception e) {
+      // Handle exception as needed
+      e.printStackTrace();
+    }
+
+    // Configure AutoBuilder last
+        AutoBuilder.configure(
+            this::getPose, // Robot pose supplier
+            this::resetPose2d, // Method to reset odometry (will be called if your auto has a starting pose)
+            this::getcChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            (speeds, feedforwards) -> setSpeed(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            ),
+            config,
+             // The robot configuration
+            () -> {
+              // Boolean supplier that controls when the path will be mirrored for the red alliance
+              // This will flip the path being followed to the red side of the field.
+              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+              var alliance = DriverStation.getAlliance();
+              if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+              }
+              return false;
+            },
+            this // Reference to this subsystem to set requirements
+    );
+        
+        swerveDrivePoseEstimator =  new SwerveDrivePoseEstimator(kinematics, Yaw, position, robotPose2d);
        
 
         double moduleStateLog[]=
@@ -84,6 +153,8 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
     }
 
+
+
     public void driveSwerve(Joystick drivController){
         // System.out.println("Swerve Drive");
 
@@ -116,11 +187,37 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
         setSpeed(chassisSpeeds);
 
+
+
+        double yawAngles = Navx.getAngle();
+        Yaw = Rotation2d.fromDegrees(yawAngles);
+
+        position[0] = frontLeftModule.modulePosition;
+        position[1] = frontRightModule.modulePosition;
+        position[2] = backLeftModule.modulePosition;
+        position[3] = backRightModule.modulePosition;
+
+
+        swerveDrivePoseEstimator.update(Yaw, position);
+
+    }
+    public Pose2d getPose(){
+
+        return swerveDrivePoseEstimator.getEstimatedPosition();
+
+    }
+    
+    public void resetPose2d(Pose2d resetPose2d){
+        swerveDrivePoseEstimator.resetPose(resetPose2d);
+    }
+
+    public ChassisSpeeds getcChassisSpeeds(){
+        return chassisSpeeds;
     }
 
     public void setSpeed(ChassisSpeeds speed){
         // System.out.println("Setting states " );
-        SwerveModuleState states[] = kinematics.toSwerveModuleStates(speed);
+        states = kinematics.toSwerveModuleStates(speed);
 
         // System.out.println("Setting states "+states );
         frontLeftModule.setModuleState(states[0]);
@@ -134,6 +231,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         // System.out.println("PID speed: "+backLeftModule.pidSpeed);
         // System.out.println("Error Tolerance: "+ backLeftModule.pidController.getErrorTolerance());
         // System.out.println();
+       
 
     }
 
