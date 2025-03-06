@@ -84,7 +84,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
-    RobotConfig config;
+    RobotConfig config = null;
     try{
       config = RobotConfig.fromGUISettings();
     } catch (Exception e) {
@@ -102,7 +102,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
                     new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
                     new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
             ),
-            config,
+            config, 
              // The robot configuration
             () -> {
               // Boolean supplier that controls when the path will be mirrored for the red alliance
