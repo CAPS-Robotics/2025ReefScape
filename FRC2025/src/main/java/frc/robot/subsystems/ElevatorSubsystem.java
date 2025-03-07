@@ -37,7 +37,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorMotorEncoder.setPosition(0);
     setDefaultCommand(new RunCommand(()-> Robot.elevator.closedServo(), this ));
     setDefaultCommand(new RunCommand(()-> Robot.elevator.getEncoder(), this ));
-    setDefaultCommand(new RunCommand(()-> Robot.elevator.setSpeed(0), this));
+    setDefaultCommand(new RunCommand(()-> Robot.elevator.setSpeed(0.0275), this));
     
 
   }

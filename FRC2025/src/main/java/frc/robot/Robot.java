@@ -26,6 +26,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.MecanumDriveTrainSubsystem;
 import frc.robot.subsystems.SwerveDriveTrainSubsystem;
 import frc.robot.commands.Autos;
+import frc.robot.commands.MMRCommands;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -46,16 +47,17 @@ public class Robot extends TimedRobot {
 
 
   public Robot(){
-        // NamedCommands.registerCommand("autoBalance", swerve.autoBalanceCommand());
-        // NamedCommands.registerCommand("exampleCommand", exampleSubsystem.exampleCommand());
-        // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
+        NamedCommands.registerCommand("raiseToL4", MMRCommands.raiseToL4);
+        NamedCommands.registerCommand("releaseServo",MMRCommands.releaseServo);
+        NamedCommands.registerCommand("closeServo", MMRCommands.closeServo);
+        NamedCommands.registerCommand("xero", MMRCommands.zero);
 
   }
   public static Command getAutonomousCommand() {
       // This method loads the auto when it is called, however, it is recommended
       // to first load your paths/autos when code starts, then return the
       // pre-loaded auto/path
-      return new PathPlannerAuto("Example Auto");
+      return new PathPlannerAuto("2 Coral");
     }
   
     
@@ -124,9 +126,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
+    
   }
 
   /** This function is called periodically during operator control. */
