@@ -9,9 +9,21 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 public final class Autos {
   /** Example static factory for an autonomous command. */
+
+  int x = 0;
  
 
-  private Autos() {
-    throw new UnsupportedOperationException("This is a utility class!");
+  public Autos() {
+
+
+
+  }
+
+
+
+  public void firstAuto(){
+
+      System.out.println("Hello from Auto:" +x );
+      x++;
   }
 }

@@ -24,6 +24,11 @@ public class Camera extends SubsystemBase{
     public PhotonPipelineResult data;
     public PhotonTrackedTarget bestTarget;
     public PhotonCamera camera;
+    public double yaw;
+    public double pitch;
+    public double area;
+    public Transform3d pose; 
+    public int AprilTag;
 
     public Camera(String name) {
 
@@ -42,12 +47,12 @@ public class Camera extends SubsystemBase{
             List <PhotonTrackedTarget> targets = data.getTargets();
             PhotonTrackedTarget bestTarget = data.getBestTarget();
         
-            double yaw = bestTarget.getYaw();
-            double pitch = bestTarget.getPitch();
-            double area = bestTarget.getArea();
-            Transform3d pose = bestTarget.getBestCameraToTarget();
+            yaw = bestTarget.getYaw();
+            pitch = bestTarget.getPitch();
+            area = bestTarget.getArea();
+            pose = bestTarget.getBestCameraToTarget();
             List<TargetCorner> corners = bestTarget.getDetectedCorners();
-            int AprilTag = bestTarget.fiducialId;
+            AprilTag = bestTarget.fiducialId;
     
             
             System.out.println("Yaw:" + yaw);
@@ -56,6 +61,8 @@ public class Camera extends SubsystemBase{
             System.out.println("April Tag:"+ AprilTag);
     
         }
+
+
         
 
     }

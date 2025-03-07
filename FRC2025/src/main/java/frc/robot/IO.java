@@ -15,33 +15,32 @@ public class IO {
     public Joystick driveController = new Joystick(0);
     public XboxController controlController = new XboxController(1);
 
+    //Elevator Buttons
+    public JoystickButton A_Button = new JoystickButton(controlController, 1);
+    public JoystickButton B_Button = new JoystickButton(controlController, 2);
+    public JoystickButton X_Button = new JoystickButton(controlController, 3);
+    public JoystickButton Y_Button = new JoystickButton(controlController, 4);
 
-
-    public JoystickButton ServoButton = new JoystickButton(driveController, 1);
-
-
-    public JoystickButton raiseButton = new JoystickButton(controlController, 1);
-    public JoystickButton lowerButton = new JoystickButton(controlController, 2);
-
-    public JoystickButton xButton = new JoystickButton(controlController, 3);
-
-    public JoystickButton yButton = new JoystickButton(driveController, 4);
-    public JoystickButton zButton = new JoystickButton(driveController, 3);
+    // public JoystickButton yButton = new JoystickButton(driveController, 4);
+    public JoystickButton joystickButton = new JoystickButton(controlController, 9);
     public JoystickButton bButton = new JoystickButton(driveController, 2);
-    public JoystickButton leftBumper = new JoystickButton(driveController, 4);
-    public JoystickButton RightBumper = new JoystickButton(driveController, 5);
+    public JoystickButton leftBumper = new JoystickButton(controlController, 5);
+    public JoystickButton RightBumper = new JoystickButton(controlController, 6);
 
 
     public IO(){
 
-        yButton.onTrue(MMRCommands.zero);
-        xButton.onTrue(MMRCommands.releaseServo);
-        bButton.onTrue(MMRCommands.raiseClimb);
+       
+        joystickButton.onTrue(MMRCommands.releaseServo);
+        joystickButton.onFalse(MMRCommands.closeServo); 
 
-
-        lowerButton.onTrue(MMRCommands.lowerElevator);
-        raiseButton.onTrue(MMRCommands.raiseElevator);
+        A_Button.onTrue(MMRCommands.raiseToL2);
+        B_Button.onTrue(MMRCommands.raiseToL3);
+        Y_Button.onTrue(MMRCommands.raiseToL4);
+        X_Button.onTrue(MMRCommands.zero);
         
+
     }
+
 
 }

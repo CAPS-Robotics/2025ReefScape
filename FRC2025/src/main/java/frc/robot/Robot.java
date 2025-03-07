@@ -25,6 +25,7 @@ import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.MecanumDriveTrainSubsystem;
 import frc.robot.subsystems.SwerveDriveTrainSubsystem;
+import frc.robot.commands.Autos;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,7 +34,8 @@ import frc.robot.subsystems.SwerveDriveTrainSubsystem;
  * project.
  */
 public class Robot extends TimedRobot { 
-
+  int x = 0;
+  public Autos auto = new Autos();
   private Command m_autonomousCommand;
   public static MecanumDriveTrainSubsystem mecanumTrain = new MecanumDriveTrainSubsystem();
   public static SwerveDriveTrainSubsystem swerveTrain = new SwerveDriveTrainSubsystem();
@@ -115,13 +117,14 @@ public class Robot extends TimedRobot {
       Robot.getAutonomousCommand();
   }
 
+
   @Override
   public void teleopInit() {
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
+    if (_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
   }
