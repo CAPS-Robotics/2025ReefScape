@@ -66,21 +66,11 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
     ChassisSpeeds chassisSpeeds; 
 
-    
-
-
-
-
-
-
-
-
 
 
     public SwerveDriveTrainSubsystem(){   
         
-         // All other subsystem initialization
-    // ...
+         // All other subsystem initialization// ...
 
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
