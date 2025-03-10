@@ -5,19 +5,9 @@
 package frc.robot;
 
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.config.PIDConstants;
-import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import edu.wpi.first.networktables.DoubleArraySubscriber;
-import edu.wpi.first.networktables.DoubleArrayTopic;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Camera;
@@ -35,7 +25,14 @@ import frc.robot.commands.MMRCommands;
  * project.
  */
 public class Robot extends TimedRobot { 
-  int x = 0;
+  public Robot(){
+    NamedCommands.registerCommand("raiseToL4", MMRCommands.raiseToL4);
+    NamedCommands.registerCommand("Drop Coral",MMRCommands.releaseServo);
+    NamedCommands.registerCommand("Close Servo", MMRCommands.closeServo);
+    NamedCommands.registerCommand("Bottom", MMRCommands.zero);
+    NamedCommands.registerCommand("Raise To L2", MMRCommands.raiseToL2);
+  }
+  
   public Autos auto = new Autos();
   private Command m_autonomousCommand;
   public static MecanumDriveTrainSubsystem mecanumTrain = new MecanumDriveTrainSubsystem();
@@ -44,20 +41,13 @@ public class Robot extends TimedRobot {
   public static ClimbSubsystem climb = new ClimbSubsystem();
   public static Camera camera = new Camera("Front Camera");
   public NamedCommands AutoCommands = new NamedCommands();
-
-
-  public Robot(){
-        NamedCommands.registerCommand("raiseToL4", MMRCommands.raiseToL4);
-        NamedCommands.registerCommand("releaseServo",MMRCommands.releaseServo);
-        NamedCommands.registerCommand("closeServo", MMRCommands.closeServo);
-        NamedCommands.registerCommand("xero", MMRCommands.zero);
-
-  }
+  
   public static Command getAutonomousCommand() {
       // This method loads the auto when it is called, however, it is recommended
       // to first load your paths/autos when code starts, then return the
       // pre-loaded auto/path
-      return new PathPlannerAuto("2 Coral");
+
+      return new PathPlannerAuto("Test Auto");
     }
   
     
@@ -73,6 +63,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+        
+
       // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
       // autonomous chooser on the dashboard.
      // m_robotContainer = new RobotContainer();
@@ -104,8 +96,9 @@ public class Robot extends TimedRobot {
     /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
     @Override
     public void autonomousInit() {
+        
     //  m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-  
+      m_autonomousCommand = Robot.getAutonomousCommand();
       // schedule the autonomous command (example)
       if (m_autonomousCommand != null) {
         m_autonomousCommand.schedule();
@@ -115,8 +108,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
-      
-      Robot.getAutonomousCommand();
+   
   }
 
 

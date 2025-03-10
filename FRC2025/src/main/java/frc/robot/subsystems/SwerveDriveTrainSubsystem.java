@@ -39,13 +39,13 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
     SwerveModule backRightModule = new SwerveModule(Constants.kBackRightDrive, Constants.kBackRightSteering,Constants.kBackRightEncoder, Constants.kBackRightEncoderOffset);
     SwerveModule backLeftModule = new SwerveModule(Constants.kBackLeftDrive, Constants.kBackLeftSteering, Constants.kBackLeftEncoder, Constants.kBackLeftEncoderOffset, true, true);
 
-    // SwerveModuleState frontLeftOptimized = frontLeftModule.moduleState.optimize(frontLeftModule.moduleState.angle);
+    
     SwerveModuleState states[];
-    SwerveModulePosition position[];
+    SwerveModulePosition[] position = {frontLeftModule.modulePosition.copy(), frontRightModule.modulePosition.copy(), backLeftModule.modulePosition.copy(), backRightModule.modulePosition.copy()};
 
 
     AHRS Navx = new AHRS(NavXComType.kMXP_SPI);
-    Rotation2d Yaw;
+    Rotation2d Yaw = Rotation2d.fromDegrees(0);
 
     Pose2d robotPose2d = new Pose2d();
     
@@ -60,20 +60,21 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
     Rotation2d BLCurrentAngle;
     Rotation2d BRCurrentAngle;
 
+
     SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeft, frontRight, backLeft, backRight);
 
     SwerveDrivePoseEstimator swerveDrivePoseEstimator; 
 
-    ChassisSpeeds chassisSpeeds; 
+    ChassisSpeeds chassisSpeeds = new ChassisSpeeds(); 
 
 
 
     public SwerveDriveTrainSubsystem(){   
+    //Pose Estimator 
+    swerveDrivePoseEstimator =  new SwerveDrivePoseEstimator(kinematics, Yaw, position, robotPose2d);
         
-         // All other subsystem initialization// ...
 
-    // Load the RobotConfig from the GUI settings. You should probably
-    // store this in your Constants file
+    //PathPlanner Init
     RobotConfig config = null;
     try{
       config = RobotConfig.fromGUISettings();
@@ -108,7 +109,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
             this // Reference to this subsystem to set requirements
     );
         
-        swerveDrivePoseEstimator =  new SwerveDrivePoseEstimator(kinematics, Yaw, position, robotPose2d);
+       
        
 
         double moduleStateLog[]=
@@ -143,7 +144,21 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
     }
 
+    public Rotation2d getCurrentYaw(){
 
+        Yaw = Rotation2d.fromDegrees(Navx.getAngle());
+        return Yaw;
+
+    }
+
+    public SwerveModulePosition[]  updatePositions(){
+        position[0] = frontLeftModule.getModulePosition();
+        position[1] = frontRightModule.getModulePosition();
+        position[2] = backLeftModule.getModulePosition();
+        position[3] = backRightModule.getModulePosition();
+
+        return position;
+    }
 
     public void driveSwerve(Joystick drivController){
         // System.out.println("Swerve Drive");
@@ -153,12 +168,13 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         BLCurrentAngle = new Rotation2d(backLeftModule.encoder.get()/1.0*2*Math.PI);
         BRCurrentAngle = new Rotation2d(backRightModule.encoder.get()/1.0*2*Math.PI);
 
+        //Optimization
+        frontLeftModule.moduleState.optimize(FLCurrentAngle);
+        frontRightModule.moduleState.optimize(FRCurrentAngle);
+        backLeftModule.moduleState.optimize(BLCurrentAngle);
+        backRightModule.moduleState.optimize(BRCurrentAngle);
 
 
-        // frontLeftModule.moduleState.optimize(FLCurrentAngle);
-        // frontRightModule.moduleState.optimize(FRCurrentAngle);
-        // backLeftModule.moduleState.optimize(BLCurrentAngle);
-        // backRightModule.moduleState.optimize(BRCurrentAngle);
 
         double velocityX = 1 * drivController.getX();
         double velocityY = -1 *drivController.getY();
@@ -188,7 +204,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         position[3] = backRightModule.modulePosition;
 
 
-        swerveDrivePoseEstimator.update(Yaw, position);
+        swerveDrivePoseEstimator.update(getCurrentYaw(), updatePositions());
 
     }
     public Pose2d getPose(){
@@ -202,12 +218,15 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
     }
 
     public ChassisSpeeds getcChassisSpeeds(){
+        swerveDrivePoseEstimator.update(getCurrentYaw(), updatePositions());
         return chassisSpeeds;
     }
 
     public void setSpeed(ChassisSpeeds speed){
         // System.out.println("Setting states " );
+        System.out.println("Speed: "+speed);
         states = kinematics.toSwerveModuleStates(speed);
+        
 
         // System.out.println("Setting states "+states );
         frontLeftModule.setModuleState(states[0]);
@@ -221,6 +240,13 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         // System.out.println("PID speed: "+backLeftModule.pidSpeed);
         // System.out.println("Error Tolerance: "+ backLeftModule.pidController.getErrorTolerance());
         // System.out.println();
+        frontLeftModule.setModulePosition();
+        frontRightModule.setModulePosition();
+        backLeftModule.setModulePosition();
+        backRightModule.setModulePosition();
+
+        swerveDrivePoseEstimator.update(getCurrentYaw(), updatePositions());
+
        
 
     }

@@ -91,7 +91,8 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
 
     public void getEncoder(){
 
-     System.out.println("Encoder Value: "+elevatorMotorEncoder.getPosition());
+     System.out.println("Encoder Value!!!!: "+elevatorMotorEncoder.getPosition());
+     
 
     }
     public void raise(){
@@ -155,7 +156,7 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
 
     public void releaseServo(){
 
-      bucketServo.setAngle(60);
+      bucketServo.setAngle(0);
 
       System.out.println(bucketServo.get());
       System.out.println("Released");
@@ -164,6 +165,7 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
 
     public void closedServo(){
       bucketServo.setAngle(180);
+      
 
     }
   @Override
