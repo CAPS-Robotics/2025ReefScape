@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -169,10 +170,10 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         BRCurrentAngle = new Rotation2d(backRightModule.encoder.get()/1.0*2*Math.PI);
 
         //Optimization
-        frontLeftModule.moduleState.optimize(FLCurrentAngle);
-        frontRightModule.moduleState.optimize(FRCurrentAngle);
-        backLeftModule.moduleState.optimize(BLCurrentAngle);
-        backRightModule.moduleState.optimize(BRCurrentAngle);
+        // frontLeftModule.moduleState.optimize(FLCurrentAngle);
+        // frontRightModule.moduleState.optimize(FRCurrentAngle);
+        // backLeftModule.moduleState.optimize(BLCurrentAngle);
+        // backRightModule.moduleState.optimize(BRCurrentAngle);
 
 
 
@@ -189,7 +190,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         // System.out.println("Velocity Y: "+VelocityY);
         // System.out.println("Omega: "+omega);
 
-        chassisSpeeds = new ChassisSpeeds(velocityX,velocityY, omega);
+        chassisSpeeds = new ChassisSpeeds(velocityX,velocityY, 0);
 
         setSpeed(chassisSpeeds);
 
@@ -206,6 +207,13 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
         swerveDrivePoseEstimator.update(getCurrentYaw(), updatePositions());
 
+        SmartDashboard.putNumber("Front Left Module Enocoder", frontLeftModule.encoderValue);
+        SmartDashboard.putNumber("Front Right Module Enocoder", frontRightModule.encoderValue);
+        SmartDashboard.putNumber("Back Left Module Enocoder", backLeftModule.encoderValue);
+        SmartDashboard.putNumber("Back Right Module Enocoder", backRightModule.encoderValue);
+
+
+
     }
     public Pose2d getPose(){
 
@@ -221,6 +229,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         swerveDrivePoseEstimator.update(getCurrentYaw(), updatePositions());
         return chassisSpeeds;
     }
+
 
     public void setSpeed(ChassisSpeeds speed){
         // System.out.println("Setting states " );

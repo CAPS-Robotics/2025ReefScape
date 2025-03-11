@@ -125,12 +125,19 @@ public class SwerveModule {
     }
  
     public void setModuleState(SwerveModuleState state){
+
         
         moduleState = state;
+        
+        setModulePosition();
 
+        moduleState.optimize(Angle);
+       
         //Set Drive Speed
         driveMotor.set(reversed*moduleState.speedMetersPerSecond*0.5);
 
+
+    
 
         //Offset Calculations
         encoderValue = (this.encoder.get()+encoderOffset);
@@ -140,6 +147,10 @@ public class SwerveModule {
         if (encoderValue < 0 ){
             encoderValue += 1;
         }
+
+       ;
+
+
         endpoint = (moduleState.angle.getRadians()/(Math.PI*2));
         pidSpeed = pidController.calculate(encoderValue, endpoint);    
         errorValue = 1 - Math.abs(pidController.getError());
