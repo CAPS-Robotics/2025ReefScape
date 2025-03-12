@@ -128,10 +128,7 @@ public class SwerveModule {
 
         
         moduleState = state;
-        
-        setModulePosition();
-
-        moduleState.optimize(Angle);
+            
        
         //Set Drive Speed
         driveMotor.set(reversed*moduleState.speedMetersPerSecond*0.5);
@@ -148,7 +145,8 @@ public class SwerveModule {
             encoderValue += 1;
         }
 
-       ;
+       
+        moduleState.optimize(Rotation2d.fromRadians((encoderValue/1)*(Math.PI*2)));
 
 
         endpoint = (moduleState.angle.getRadians()/(Math.PI*2));

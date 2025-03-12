@@ -35,7 +35,7 @@ import frc.robot.Swerve.SwerveModule;
 public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
 
-    SwerveModule frontRightModule = new SwerveModule(Constants.kFrontRightDrive, Constants.kFrontRightSteering, Constants.kFrontRightEncoder, Constants.kFrontRightEncoderOffset, true, false);
+    SwerveModule frontRightModule = new SwerveModule(Constants.kFrontRightDrive, Constants.kFrontRightSteering, Constants.kFrontRightEncoder, Constants.kFrontRightEncoderOffset, true, true);
     SwerveModule frontLeftModule = new SwerveModule(Constants.kFrontLeftDrive, Constants.kFrontLeftSteering,Constants.kFrontLeftEncoder, Constants.kFrontLeftEncoderOffset);
     SwerveModule backRightModule = new SwerveModule(Constants.kBackRightDrive, Constants.kBackRightSteering,Constants.kBackRightEncoder, Constants.kBackRightEncoderOffset);
     SwerveModule backLeftModule = new SwerveModule(Constants.kBackLeftDrive, Constants.kBackLeftSteering, Constants.kBackLeftEncoder, Constants.kBackLeftEncoderOffset, true, true);
@@ -198,7 +198,9 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
         double yawAngles = Navx.getAngle();
         Yaw = Rotation2d.fromDegrees(yawAngles);
-
+        
+        SmartDashboard.putNumber("Yaw Angle", yawAngles);
+        
         position[0] = frontLeftModule.modulePosition;
         position[1] = frontRightModule.modulePosition;
         position[2] = backLeftModule.modulePosition;
@@ -215,6 +217,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
 
     }
+
     public Pose2d getPose(){
 
         return swerveDrivePoseEstimator.getEstimatedPosition();

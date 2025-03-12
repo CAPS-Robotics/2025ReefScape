@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import javax.imageio.plugins.jpeg.JPEGHuffmanTable;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -21,11 +23,12 @@ public class IO {
     public JoystickButton X_Button = new JoystickButton(controlController, 3);
     public JoystickButton Y_Button = new JoystickButton(controlController, 4);
 
-    // public JoystickButton yButton = new JoystickButton(driveController, 4);
+    // Servo
     public JoystickButton joystickButton = new JoystickButton(controlController, 9);
-    public JoystickButton bButton = new JoystickButton(driveController, 2);
-    public JoystickButton leftBumper = new JoystickButton(controlController, 5);
-    public JoystickButton RightBumper = new JoystickButton(controlController, 6);
+
+    //Algae
+    public JoystickButton rightBumper = new JoystickButton(controlController, 6);
+    
 
 
     public IO(){
@@ -38,6 +41,9 @@ public class IO {
         B_Button.onTrue(MMRCommands.raiseToL3);
         Y_Button.onTrue(MMRCommands.raiseToL4);
         X_Button.onTrue(MMRCommands.zero);
+
+        // rightBumper.onTrue(MMRCommands.RemoveAlgae);
+        // rightBumper.onFalse(MMRCommands.ResetAlgae);
         
 
     }

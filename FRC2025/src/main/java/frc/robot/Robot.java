@@ -10,6 +10,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -40,6 +41,7 @@ public class Robot extends TimedRobot {
   public static ElevatorSubsystem elevator = new ElevatorSubsystem();
   public static ClimbSubsystem climb = new ClimbSubsystem();
   public static Camera camera = new Camera("Front Camera");
+  // public static AlgaeSubsystem algae = new AlgaeSubsystem();
   public NamedCommands AutoCommands = new NamedCommands();
   
   public static Command getAutonomousCommand() {

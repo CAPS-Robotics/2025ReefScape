@@ -14,8 +14,11 @@ import frc.robot.Constants;
   
 /** Add your docs here. */
 public class MMRCommands {
+    //Algae Commands
+    // public static RunCommand RemoveAlgae = new RunCommand(()-> Robot.algae.RemoveAlgae(100), Robot.algae);
+    // public static RunCommand ResetAlgae = new RunCommand(()-> Robot.algae.resetArm(0), Robot.algae);
 
-    
+    //Elevator Commands
     public static RunCommand raiseToL2 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_2), Robot.elevator);
     public static RunCommand raiseToL3 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_3), Robot.elevator);
     public static RunCommand raiseToL4 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_4), Robot.elevator);
@@ -25,12 +28,15 @@ public class MMRCommands {
 
     public static RunCommand zero = new RunCommand(()-> Robot.elevator.zero(), Robot.elevator);
     
+    //Servo Commands
     public static InstantCommand releaseServo = new InstantCommand(()-> Robot.elevator.releaseServo(), Robot.elevator);
     public static InstantCommand closeServo = new InstantCommand(()-> Robot.elevator.closedServo(), Robot.elevator);
+    
+    //Climb Commands
     public static RunCommand raiseClimb = new RunCommand(()-> Robot.climb.raise(), Robot.climb);
     public static RunCommand lowerClimb = new RunCommand(()-> Robot.climb.lower(), Robot.climb);
 
-    
+    //Elevator Stop
     public static RunCommand stop = new RunCommand(()-> Robot.elevator.stop(), Robot.elevator);
 
 
