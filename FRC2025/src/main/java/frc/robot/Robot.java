@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
   public static ElevatorSubsystem elevator = new ElevatorSubsystem();
   public static ClimbSubsystem climb = new ClimbSubsystem();
   public static Camera camera = new Camera("Front Camera");
-  // public static AlgaeSubsystem algae = new AlgaeSubsystem();
+  public static AlgaeSubsystem algae = new AlgaeSubsystem();
   public NamedCommands AutoCommands = new NamedCommands();
   
   public static Command getAutonomousCommand() {

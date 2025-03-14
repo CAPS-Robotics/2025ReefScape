@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,10 +20,12 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   SparkMax Algae = new SparkMax(11, MotorType.kBrushless);
   RelativeEncoder AlgaeEncoder = Algae.getEncoder();
+  DigitalOutput ResetSwitch = new DigitalOutput(2);
+  DigitalOutput StopSwicth = new DigitalOutput(3);
 
 
   public AlgaeSubsystem() {
-    // setDefaultCommand(new RunCommand(()-> Robot.algae.currentEncoder(), this ));
+    setDefaultCommand(new RunCommand(()-> Robot.algae.currentEncoder(), this ));
   }
 
 
@@ -35,20 +38,62 @@ public class AlgaeSubsystem extends SubsystemBase {
 
   public void RemoveAlgae(double endpoint){
 
-    if(endpoint > currentEncoder()){
-      Algae.set(1*Constants.kAlgaeDampner);
+    if(endpoint+0.2 > currentEncoder()){
+      Algae.set(0.5);
     }else if(endpoint < currentEncoder()){
-      Algae.set(0);
+      if(endpoint > currentEncoder()){
+        Algae.set(0.2);
+      }
+      } 
+      Algae.set(0.015);
+    } 
+
+    
+  
+
+  public void resetArmEncoder(double endpoint){
+    if(endpoint+0.2 < currentEncoder()){
+      Algae.set(-0.2);
+    }else if(endpoint > currentEncoder()){
+      Algae.set(-0.02);
     }
+
+
+    
 
   }
 
-  public void resetArm(double endpoint){
-    if(endpoint < currentEncoder()){
-      Algae.set(-1*Constants.kAlgaeDampner);
-    }else if(endpoint > currentEncoder()){
+  public void resetArm(){
+    if(ResetSwitch.get()){
+
       Algae.set(0);
+      AlgaeEncoder.setPosition(0);
+      
+    }else{
+      
+      Algae.set(-0.5*Constants.kAlgaeDampner);
+      SmartDashboard.putBoolean("Limit Switch", ResetSwitch.get());
+      
     }
+
+    SmartDashboard.putBoolean("ResetButton Pressed", true);
+    
+
+    
+  }
+
+  public void forward(){
+
+    Algae.set(1*Constants.kAlgaeDampner);
+
+
+  }
+
+  public void Backward(){
+
+    Algae.set(-0.5*Constants.kAlgaeDampner);
+
+
   }
   @Override
   public void periodic() {

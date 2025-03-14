@@ -27,7 +27,8 @@ public class IO {
     public JoystickButton joystickButton = new JoystickButton(controlController, 9);
 
     //Algae
-    public JoystickButton rightBumper = new JoystickButton(controlController, 6);
+    public JoystickButton raiseButton = new JoystickButton(controlController, 7);
+    public JoystickButton lowerButton = new JoystickButton(controlController, 8);
     
 
 
@@ -44,6 +45,8 @@ public class IO {
 
         // rightBumper.onTrue(MMRCommands.RemoveAlgae);
         // rightBumper.onFalse(MMRCommands.ResetAlgae);
+        raiseButton.onTrue(MMRCommands.ForwardAlgae);
+        lowerButton.onTrue(MMRCommands.ReverseAlgae);
         
 
     }

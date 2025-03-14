@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimbSubsystem extends SubsystemBase {
 
-  public SparkMax motor1 = new SparkMax(Constants.kClimbMotor1, MotorType.kBrushed);
-  public SparkMax motor2 = new SparkMax(Constants.kClimbMotor2, MotorType.kBrushed);
+  public SparkMax motor1 = new SparkMax(12, MotorType.kBrushed);
+  public SparkMax motor2 = new SparkMax(13, MotorType.kBrushed);
 
   public double dampner = 1;
   /** Creates a new ClimbSubsystem. */

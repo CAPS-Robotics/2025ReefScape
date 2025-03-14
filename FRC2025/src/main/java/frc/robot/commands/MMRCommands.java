@@ -15,8 +15,10 @@ import frc.robot.Constants;
 /** Add your docs here. */
 public class MMRCommands {
     //Algae Commands
-    // public static RunCommand RemoveAlgae = new RunCommand(()-> Robot.algae.RemoveAlgae(100), Robot.algae);
-    // public static RunCommand ResetAlgae = new RunCommand(()-> Robot.algae.resetArm(0), Robot.algae);
+    public static RunCommand ForwardAlgae = new RunCommand(()-> {Robot.algae.RemoveAlgae(0.6);Robot.algae.RemoveAlgae(0.6);}, Robot.algae);
+    public static RunCommand ReverseAlgae = new RunCommand(()-> Robot.algae.resetArmEncoder(-1.3), Robot.algae);
+    // public static RunCommand ForwardAlgae  = new RunCommand(()-> Robot.algae.forward(), Robot.aEncoder(-1.8)lgae);
+    // public static RunCommand ReverseAlgae  = new RunCommand(()-> Robot.algae.Backward(), Robot.algae);
 
     //Elevator Commands
     public static RunCommand raiseToL2 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_2), Robot.elevator);
