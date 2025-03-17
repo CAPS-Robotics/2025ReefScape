@@ -43,10 +43,10 @@ public class IO {
         Y_Button.onTrue(MMRCommands.raiseToL4);
         X_Button.onTrue(MMRCommands.zero);
 
-        // rightBumper.onTrue(MMRCommands.RemoveAlgae);
-        // rightBumper.onFalse(MMRCommands.ResetAlgae);
-        raiseButton.onTrue(MMRCommands.ForwardAlgae);
-        lowerButton.onTrue(MMRCommands.ReverseAlgae);
+        // raiseButton.whileTrue(MMRCommands.Reset);
+        // raiseButton.whileFalse(MMRCommands.Extend);
+        // // raiseButton.whileTrue(MMRCommands.raiseClimb);
+        // lowerButton.whileTrue(MMRCommands.lowerClimb);
         
 
     }

@@ -8,93 +8,69 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import pabeles.concurrency.ConcurrencyOps.Reset;
+import edu.wpi.first.wpilibj2.command.*;
 
 public class AlgaeSubsystem extends SubsystemBase {
 
 
-  SparkMax Algae = new SparkMax(11, MotorType.kBrushless);
-  RelativeEncoder AlgaeEncoder = Algae.getEncoder();
-  DigitalOutput ResetSwitch = new DigitalOutput(2);
-  DigitalOutput StopSwicth = new DigitalOutput(3);
-
+  public SparkMax Algae = new SparkMax(12, MotorType.kBrushless);
+  public RelativeEncoder AlgaeEncoder = Algae.getEncoder();
+  public DigitalInput ResetSwitch = new DigitalInput(2);
 
   public AlgaeSubsystem() {
-    setDefaultCommand(new RunCommand(()-> Robot.algae.currentEncoder(), this ));
+    SmartDashboard.putBoolean("Reset Switch", false);
+    // setDefaultCommand(new RunCommand(()-> Robot.algae.Stop(), this ));
+
   }
 
 
-  public double currentEncoder(){
+  public void Stop(){
+    setSpeed(0);
+  }
 
-    SmartDashboard.putNumber("Algae Encoder Value", AlgaeEncoder.getPosition());
-    return AlgaeEncoder.getPosition();
+  public void extendArm(){
+    setSpeed(0.1);
    
   }
 
-  public void RemoveAlgae(double endpoint){
+  public void ResetArm(double endpoint){
+   
+    // setSpeed(-1*Constants.kAlgaeDampner);
 
-    if(endpoint+0.2 > currentEncoder()){
-      Algae.set(0.5);
-    }else if(endpoint < currentEncoder()){
-      if(endpoint > currentEncoder()){
-        Algae.set(0.2);
+    if(endpoint <  AlgaeEncoder.getPosition()){
+      setSpeed(-1*Constants.kAlgaeDampner);
+    }else if(endpoint < AlgaeEncoder.getPosition()){
+      if(AlgaeEncoder.getPosition()-endpoint >= 0.1){
+        setSpeed(-1*Constants.kAlgaeDampner);
+      }else{
+        setSpeed(-0.015);
       }
-      } 
-      Algae.set(0.015);
-    } 
+    }
 
     
+  } 
+
+  public void setSpeed(double input){
+    double speed = input*Constants.kAlgaeDampner;
+    if(speed > 0 ){
+      if(ResetSwitch.get()){
+        Algae.set(-0.015);
+        AlgaeEncoder.setPosition(0);
+        System.out.println("Arm Reset");
+      }else{
+        Algae.set(speed);
+      }
+    }
+  }
   
-
-  public void resetArmEncoder(double endpoint){
-    if(endpoint+0.2 < currentEncoder()){
-      Algae.set(-0.2);
-    }else if(endpoint > currentEncoder()){
-      Algae.set(-0.02);
-    }
-
-
-    
-
-  }
-
-  public void resetArm(){
-    if(ResetSwitch.get()){
-
-      Algae.set(0);
-      AlgaeEncoder.setPosition(0);
-      
-    }else{
-      
-      Algae.set(-0.5*Constants.kAlgaeDampner);
-      SmartDashboard.putBoolean("Limit Switch", ResetSwitch.get());
-      
-    }
-
-    SmartDashboard.putBoolean("ResetButton Pressed", true);
-    
-
-    
-  }
-
-  public void forward(){
-
-    Algae.set(1*Constants.kAlgaeDampner);
-
-
-  }
-
-  public void Backward(){
-
-    Algae.set(-0.5*Constants.kAlgaeDampner);
-
-
-  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

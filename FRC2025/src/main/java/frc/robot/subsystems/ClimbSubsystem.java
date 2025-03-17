@@ -4,20 +4,25 @@
 
 package frc.robot.subsystems;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimbSubsystem extends SubsystemBase {
 
-  public SparkMax motor1 = new SparkMax(12, MotorType.kBrushed);
-  public SparkMax motor2 = new SparkMax(13, MotorType.kBrushed);
+  public SparkMax motor1 = new SparkMax(11, MotorType.kBrushless);
+ 
 
-  public double dampner = 1;
+  public double dampner = 0.5;
   /** Creates a new ClimbSubsystem. */
   public ClimbSubsystem() {
+    System.out.println("qwertyuioppoiuytrewqertyuiopoiuytr");
+
+    setDefaultCommand(new RunCommand(()->Robot.climb.stop(), this));
 
   }
 
@@ -25,14 +30,18 @@ public class ClimbSubsystem extends SubsystemBase {
   public void lower(){
 
     motor1.set(-1*dampner);
-    motor2.set(-1*dampner);
-
   }
 
   public void raise(){
 
     motor1.set(1*dampner);
-    motor2.set(1*dampner);
+
+  }
+
+
+  public void stop(){
+    System.out.println("qwertyuiop");
+    motor1.set(0);
 
   }
 

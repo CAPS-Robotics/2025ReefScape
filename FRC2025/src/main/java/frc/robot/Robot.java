@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
   
   public Autos auto = new Autos();
   private Command m_autonomousCommand;
+  private Command Starting;
   public static MecanumDriveTrainSubsystem mecanumTrain = new MecanumDriveTrainSubsystem();
   public static SwerveDriveTrainSubsystem swerveTrain = new SwerveDriveTrainSubsystem();
   public static ElevatorSubsystem elevator = new ElevatorSubsystem();
@@ -65,9 +66,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
-        
-
-      // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+           // our RobotContainer.  This will perform all our button bindings, and put our
       // autonomous chooser on the dashboard.
      // m_robotContainer = new RobotContainer();
     }
@@ -99,10 +98,11 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         
-    //  m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+      Starting = MMRCommands.Reset;
       m_autonomousCommand = Robot.getAutonomousCommand();
       // schedule the autonomous command (example)
       if (m_autonomousCommand != null) {
+        Starting.schedule();
         m_autonomousCommand.schedule();
       }
     }
