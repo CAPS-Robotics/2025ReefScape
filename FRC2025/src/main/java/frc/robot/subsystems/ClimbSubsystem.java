@@ -9,13 +9,15 @@ import frc.robot.Robot;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimbSubsystem extends SubsystemBase {
 
   public SparkMax motor1 = new SparkMax(11, MotorType.kBrushless);
- 
+  public Servo RatchetServo = new Servo(1);
 
   public double dampner = 0.5;
   /** Creates a new ClimbSubsystem. */
@@ -40,12 +42,19 @@ public class ClimbSubsystem extends SubsystemBase {
 
 
   public void stop(){
-    System.out.println("qwertyuiop");
     motor1.set(0);
-
   }
 
+  public void Ratchet(){
+    RatchetServo.setAngle(25);
+  }
   
+
+  public void switchRatchet(){
+    RatchetServo.setAngle(0);
+  }
+  
+
 
 
   @Override

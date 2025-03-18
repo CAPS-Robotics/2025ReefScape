@@ -7,6 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.Constants;
 
@@ -36,10 +38,23 @@ public class MMRCommands {
     
     //Climb Commands
     public static RunCommand raiseClimb = new RunCommand(()-> Robot.climb.raise(), Robot.climb);
+    public static WaitCommand Wait = new WaitCommand(1);
+
+    
     public static RunCommand lowerClimb = new RunCommand(()-> Robot.climb.lower(), Robot.climb);
+    public static RunCommand RatchetEnable = new RunCommand(()-> Robot.climb.Ratchet(), Robot.climb);
+    public static RunCommand RatchetDisable = new RunCommand(()-> Robot.climb.switchRatchet(), Robot.climb);
+
+    public static SequentialCommandGroup LowerCLimb = new SequentialCommandGroup(new RunCommand(()-> Robot.climb.Ratchet(), Robot.climb),new WaitCommand(1), new RunCommand(()-> Robot.climb.lower(), Robot.climb));
 
     //Elevator Stop
     public static RunCommand stop = new RunCommand(()-> Robot.elevator.stop(), Robot.elevator);
+
+
+    //Alignment
+    public static RunCommand Align = new RunCommand(()-> Robot.camera.Align(), Robot.camera);
+    public static RunCommand AlignLeft = new RunCommand(()-> Robot.camera.AlignLeft(), Robot.camera);
+    public static RunCommand AlignRight = new RunCommand(()-> Robot.camera.AlignRight(), Robot.camera);
 
 
 }

@@ -7,12 +7,14 @@ package frc.robot.subsystems;
 import java.util.List;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
 
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -29,6 +31,9 @@ public class Camera extends SubsystemBase{
     public double area;
     public Transform3d pose; 
     public int AprilTag;
+    boolean targetVisible = false;
+    public double targetYaw = 0.0;
+    public double targetRange = 0.0;
 
     public Camera(String name) {
 
@@ -40,8 +45,7 @@ public class Camera extends SubsystemBase{
 
     public void setData(){
         
-        boolean targetVisible = false;
-        double targetYaw = 0.0;
+        
         var results = camera.getAllUnreadResults();
         if (!results.isEmpty()) {
             // Camera processed a new frame since last
@@ -50,41 +54,36 @@ public class Camera extends SubsystemBase{
             if (result.hasTargets()) {
                 // At least one AprilTag was seen by the camera
                 for (var target : result.getTargets()) {
-                    if (target.getFiducialId() == 7) {
+                    if (target.getFiducialId() == 7 ) {
                         // Found Tag 7, record its information
                         targetYaw = target.getYaw();
+                        targetRange =
+                                PhotonUtils.calculateDistanceToTargetMeters(
+                                        Units.inchesToMeters(10), // Measured with a tape measure, or in CAD.
+                                        0.17, // From 2024 game manual for ID 7
+                                        Units.degreesToRadians(-30.0), // Measured with a protractor, or in CAD.
+                                        Units.degreesToRadians(target.getPitch()));
+
                         targetVisible = true;
                     }
                 }
             }
         }
  
-        // SwerveDriveTrainSubsystem.alignAprilTag(targetYaw, 0.5);
+  
+    }
 
-        
-        data = camera.getLatestResult();
-        if (data.hasTargets() == true){
+    public void Align(){
+        SwerveDriveTrainSubsystem.alignWithAprilTag(targetYaw, 0.5, 0, 0.5, targetRange);
+    }
 
-            List <PhotonTrackedTarget> targets = data.getTargets();
-            PhotonTrackedTarget bestTarget = data.getBestTarget();
-        
-            yaw = bestTarget.getYaw();
-            pitch = bestTarget.getPitch();
-            area = bestTarget.getArea();
-            pose = bestTarget.getBestCameraToTarget();
-            List<TargetCorner> corners = bestTarget.getDetectedCorners();
-            AprilTag = bestTarget.fiducialId;
+    public void AlignRight(){
+        SwerveDriveTrainSubsystem.alignWithAprilTag(targetYaw, 0.5, 1, 0.5, targetRange);
+    }
     
-            
-            System.out.println("Yaw:" + yaw);
-            // System.out.println("Pitch:" + pitch);
-            // System.out.println("Area:" + area);
-            System.out.println("April Tag:"+ AprilTag);
-    
-        }
 
-
+    public void AlignLeft(){
+        SwerveDriveTrainSubsystem.alignWithAprilTag(targetYaw, 0.5, -1, 0.5, targetRange);
         
-
     }
 }
