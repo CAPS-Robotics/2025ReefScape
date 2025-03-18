@@ -34,6 +34,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public ElevatorSubsystem()
   {
+    elevatorMotor.set(0);
     elevatorMotorEncoder.setPosition(0);
     setDefaultCommand(new RunCommand(()-> Robot.elevator.closedServo(), this ));
     setDefaultCommand(new RunCommand(()-> Robot.elevator.getEncoder(), this ));
@@ -44,8 +45,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 
   public void raiseTo(double endpointRotations){
-    
-    ;
 
     currentRotations = elevatorMotorEncoder.getPosition();
     System.out.println("Encoder Value: "+ currentRotations);
@@ -77,13 +76,13 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
     }
   
     public void zero(){
-      if(bottomlimitSwitch.get()){
-        setSpeed(-1);;
-
-      }else{
-      
+      if(!bottomlimitSwitch.get()){
         elevatorMotor.set(0);
         elevatorMotorEncoder.setPosition(0);
+
+      }else{
+        setSpeed(-1);
+        
       }
 
     }
@@ -136,14 +135,12 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
 
         if(bottomlimitSwitch.get()){
           elevatorMotor.set(motorSpeed);
-
         }else{
-        
           elevatorMotor.set(0);
           System.out.println("Bottom Limit Switch Pressed");
           elevatorMotorEncoder.setPosition(0);
 
-
+          
         }
 
       } else if (motorSpeed == 0) {
@@ -152,6 +149,7 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
 
       currentRotations = elevatorMotorEncoder.getPosition();
       System.out.println("Encoder Value: "+currentRotations);
+      System.out.println("Bottom Limit Switch!!!!!!!!!!!!!!!!!!!!!: "+bottomlimitSwitch.get());
 
     }
 

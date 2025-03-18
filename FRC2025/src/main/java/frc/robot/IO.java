@@ -8,6 +8,7 @@ import javax.imageio.plugins.jpeg.JPEGHuffmanTable;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.MMRCommands;
 
@@ -29,8 +30,15 @@ public class IO {
     //Algae
     public JoystickButton raiseButton = new JoystickButton(controlController, 7);
     public JoystickButton lowerButton = new JoystickButton(controlController, 8);
+    public JoystickButton RatchetRelease = new JoystickButton(driveController, 7);
+    public JoystickButton RatchetEngage = new JoystickButton(driveController, 8);
 
-    //
+    //Align 
+    public JoystickButton AlignButton = new JoystickButton(driveController, 1);
+    public JoystickButton AlignLeftButton = new JoystickButton(driveController, 2);
+    public JoystickButton AlignRightButton = new JoystickButton(driveController, 4);
+
+
     
 
 
@@ -41,15 +49,22 @@ public class IO {
         bumperButton.onFalse(MMRCommands.closeServo); 
 
 
-        A_Button.whileTrue(MMRCommands.raiseElevator);
-        B_Button.whileTrue(MMRCommands.lowerElevator);
+        A_Button.whileTrue(MMRCommands.raiseToL2);
+        B_Button.whileTrue(MMRCommands.raiseToL3);
         Y_Button.onTrue(MMRCommands.raiseToL4);
         X_Button.onTrue(MMRCommands.zero);
 
-        raiseButton.whileTrue(MMRCommands.Reset);
-        raiseButton.whileFalse(MMRCommands.Extend);
-        // // raiseButton.whileTrue(MMRCommands.raiseClimb);
-        // lowerButton.whileTrue(MMRCommands.lowerClimb);
+        raiseButton.whileTrue(MMRCommands.raiseClimb);
+        lowerButton.whileTrue(MMRCommands.LowerCLimb);
+        RatchetEngage.whileTrue(MMRCommands.RatchetEnable);
+        RatchetRelease.whileTrue(MMRCommands.RatchetDisable);
+
+
+        AlignButton.toggleOnTrue(MMRCommands.Align);
+        AlignLeftButton.onTrue(MMRCommands.AlignLeft);
+        AlignRightButton.onTrue(MMRCommands.AlignRight);
+
+
         
 
     }

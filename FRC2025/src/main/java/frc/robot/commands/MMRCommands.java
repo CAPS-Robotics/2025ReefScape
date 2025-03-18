@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Robot;
 import frc.robot.Constants;
 
@@ -23,9 +24,9 @@ public class MMRCommands {
     public static RunCommand Reset = new RunCommand(()-> Robot.algae.ResetArm(2.4), Robot.algae);
 
     //Elevator Commands
-    public static RunCommand raiseToL2 = new RunCommand(()-> {Robot.algae.extendArm();Robot.elevator.raiseTo(Constants.kLevel_2);}, Robot.elevator);
-    public static RunCommand raiseToL3 = new RunCommand(()-> {Robot.algae.extendArm();Robot.elevator.raiseTo(Constants.kLevel_3);}, Robot.elevator);
-    public static RunCommand raiseToL4 = new RunCommand(()-> {Robot.algae.extendArm();Robot.elevator.raiseTo(Constants.kLevel_4);}, Robot.elevator);
+    public static RunCommand raiseToL2 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_2), Robot.elevator);
+    public static RunCommand raiseToL3 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_3), Robot.elevator);
+    public static RunCommand raiseToL4 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_4), Robot.elevator);
 
     public static RunCommand raiseElevator = new RunCommand(()-> Robot.elevator.raise(), Robot.elevator);
     public static RunCommand lowerElevator = new RunCommand(()-> Robot.elevator.lower(), Robot.elevator);
@@ -38,14 +39,14 @@ public class MMRCommands {
     
     //Climb Commands
     public static RunCommand raiseClimb = new RunCommand(()-> Robot.climb.raise(), Robot.climb);
-    public static WaitCommand Wait = new WaitCommand(1);
+    public static WaitCommand Wait = new WaitCommand(0.5);
 
     
     public static RunCommand lowerClimb = new RunCommand(()-> Robot.climb.lower(), Robot.climb);
-    public static RunCommand RatchetEnable = new RunCommand(()-> Robot.climb.Ratchet(), Robot.climb);
-    public static RunCommand RatchetDisable = new RunCommand(()-> Robot.climb.switchRatchet(), Robot.climb);
+    public static InstantCommand RatchetEnable = new InstantCommand(()-> Robot.climb.Ratchet(), Robot.climb);
+    public static InstantCommand RatchetDisable = new InstantCommand(()-> Robot.climb.switchRatchet(), Robot.climb);
 
-    public static SequentialCommandGroup LowerCLimb = new SequentialCommandGroup(new RunCommand(()-> Robot.climb.Ratchet(), Robot.climb),new WaitCommand(1), new RunCommand(()-> Robot.climb.lower(), Robot.climb));
+    public static SequentialCommandGroup LowerCLimb = new SequentialCommandGroup(RatchetEnable, Wait, lowerClimb );
 
     //Elevator Stop
     public static RunCommand stop = new RunCommand(()-> Robot.elevator.stop(), Robot.elevator);
