@@ -24,27 +24,30 @@ public class IO {
     public JoystickButton Y_Button = new JoystickButton(controlController, 4);
 
     // Servo
-    public JoystickButton joystickButton = new JoystickButton(controlController, 9);
+    public JoystickButton bumperButton = new JoystickButton(controlController, 5);
 
     //Algae
     public JoystickButton raiseButton = new JoystickButton(controlController, 7);
     public JoystickButton lowerButton = new JoystickButton(controlController, 8);
+
+    //
     
 
 
     public IO(){
 
        
-        joystickButton.onTrue(MMRCommands.releaseServo);
-        joystickButton.onFalse(MMRCommands.closeServo); 
+        bumperButton.onTrue(MMRCommands.releaseServo);
+        bumperButton.onFalse(MMRCommands.closeServo); 
 
-        A_Button.onTrue(MMRCommands.raiseToL2);
-        B_Button.onTrue(MMRCommands.raiseToL3);
+
+        A_Button.whileTrue(MMRCommands.raiseElevator);
+        B_Button.whileTrue(MMRCommands.lowerElevator);
         Y_Button.onTrue(MMRCommands.raiseToL4);
         X_Button.onTrue(MMRCommands.zero);
 
-        // raiseButton.whileTrue(MMRCommands.Reset);
-        // raiseButton.whileFalse(MMRCommands.Extend);
+        raiseButton.whileTrue(MMRCommands.Reset);
+        raiseButton.whileFalse(MMRCommands.Extend);
         // // raiseButton.whileTrue(MMRCommands.raiseClimb);
         // lowerButton.whileTrue(MMRCommands.lowerClimb);
         

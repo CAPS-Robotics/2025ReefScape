@@ -59,7 +59,7 @@ public class Camera extends SubsystemBase{
             }
         }
  
-        SwerveDriveTrainSubsystem.alignAprilTag(targetYaw, 0.5);
+        // SwerveDriveTrainSubsystem.alignAprilTag(targetYaw, 0.5);
 
         
         data = camera.getLatestResult();

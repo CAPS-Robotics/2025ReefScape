@@ -37,32 +37,33 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public void extendArm(){
-    setSpeed(0.1);
+    Algae.set(0.1);
+
    
   }
 
   public void ResetArm(double endpoint){
-   
-    // setSpeed(-1*Constants.kAlgaeDampner);
 
-    if(endpoint <  AlgaeEncoder.getPosition()){
-      setSpeed(-1*Constants.kAlgaeDampner);
-    }else if(endpoint < AlgaeEncoder.getPosition()){
-      if(AlgaeEncoder.getPosition()-endpoint >= 0.1){
-        setSpeed(-1*Constants.kAlgaeDampner);
-      }else{
-        setSpeed(-0.015);
-      }
-    }
+   Algae.set(-0.1);
+
+    // if(endpoint <  AlgaeEncoder.getPosition()){
+    //   setSpeed(-1*Constants.kAlgaeDampner);
+    // }else if(endpoint < AlgaeEncoder.getPosition()){
+    //   if(AlgaeEncoder.getPosition()-endpoint >= 0.1){
+    //     setSpeed(-1*Constants.kAlgaeDampner);
+    //   }else{
+    //     setSpeed(-0.015);
+    //   }
+    // }
 
     
   } 
 
   public void setSpeed(double input){
-    double speed = input*Constants.kAlgaeDampner;
+    double speed = input;
     if(speed > 0 ){
-      if(ResetSwitch.get()){
-        Algae.set(-0.015);
+      if(!ResetSwitch.get()){
+        Algae.set(0);
         AlgaeEncoder.setPosition(0);
         System.out.println("Arm Reset");
       }else{

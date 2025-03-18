@@ -29,7 +29,7 @@ public class SwerveModule {
     public double encoderOffset;
     public double distanceMoved = 0;
     private int invert = 1;
-    private int reversed = 1;
+    private double reversed = 1;
     public double endpoint;
     public double pidSpeed;
     public double errorValue;
@@ -73,7 +73,7 @@ public class SwerveModule {
 
         if (reverse == true){
 
-            reversed = -1;
+            reversed = -1.05;
         }
 
 
@@ -131,7 +131,7 @@ public class SwerveModule {
             
        
         //Set Drive Speed
-        driveMotor.set(reversed*moduleState.speedMetersPerSecond*0.5);
+       
 
 
     
@@ -159,6 +159,7 @@ public class SwerveModule {
 
         //Set Steering Speed
         steeringMotor.set(invert*pidSpeed*0.5);
+        driveMotor.set(reversed*moduleState.speedMetersPerSecond*0.5);
 
        
         

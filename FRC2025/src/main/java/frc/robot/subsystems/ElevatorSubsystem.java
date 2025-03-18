@@ -19,9 +19,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   public SparkFlex elevatorMotor = new SparkFlex(Constants.kElevatorMotor, MotorType.kBrushless);
 
   public RelativeEncoder elevatorMotorEncoder = elevatorMotor.getEncoder();
-  public Servo bucketServo = new Servo(3);
+  public Servo bucketServo = new Servo(0);
   
-  //figure out distance of one rotation of the axle
+  //figure out distance of one rotation 88of the axle
 
   public double heightToraise;
   public double distancePerRotation = 5;
@@ -37,7 +37,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorMotorEncoder.setPosition(0);
     setDefaultCommand(new RunCommand(()-> Robot.elevator.closedServo(), this ));
     setDefaultCommand(new RunCommand(()-> Robot.elevator.getEncoder(), this ));
-    setDefaultCommand(new RunCommand(()-> Robot.elevator.setSpeed(0.0275), this));
+    setDefaultCommand(new RunCommand(()-> Robot.elevator.setSpeed(0.0375), this));
     
 
   }
@@ -48,7 +48,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     ;
 
     currentRotations = elevatorMotorEncoder.getPosition();
-    // System.out.println("Encoder Value: "+ currentRotations);
+    System.out.println("Encoder Value: "+ currentRotations);
 
     double numRotationRequired = endpointRotations;
     // System.out.println("numRotationsRequired: " + numRotationRequired);
@@ -62,7 +62,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     //L4 -- 78 
 
       if (numRotationRequired <= currentRotations){
-        setSpeed(0.0275);
+        setSpeed(0.0375);
         // if(currentRotations >= numRotationRequired+10)
         //   {
         //     setSpeed(-0.05);
@@ -113,6 +113,8 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
 
     }
 
+   
+
     public void stop(){
 
       setSpeed(0);
@@ -126,7 +128,7 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
       if(motorSpeed > 0){
         if(toplimitSwitch.get()){
           System.out.println("Top Limit Switch Pressed");
-          elevatorMotor.set(0.0275);
+          elevatorMotor.set(0.0375);
         }else{
           elevatorMotor.set(motorSpeed);
         }
@@ -145,7 +147,7 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
         }
 
       } else if (motorSpeed == 0) {
-        elevatorMotor.set(0.0275);
+        elevatorMotor.set(0.0375);
       }
 
       currentRotations = elevatorMotorEncoder.getPosition();

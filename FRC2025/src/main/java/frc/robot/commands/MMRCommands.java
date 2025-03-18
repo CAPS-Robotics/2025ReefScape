@@ -21,9 +21,9 @@ public class MMRCommands {
     public static RunCommand Reset = new RunCommand(()-> Robot.algae.ResetArm(2.4), Robot.algae);
 
     //Elevator Commands
-    public static RunCommand raiseToL2 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_2), Robot.elevator);
-    public static RunCommand raiseToL3 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_3), Robot.elevator);
-    public static RunCommand raiseToL4 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_4), Robot.elevator);
+    public static RunCommand raiseToL2 = new RunCommand(()-> {Robot.algae.extendArm();Robot.elevator.raiseTo(Constants.kLevel_2);}, Robot.elevator);
+    public static RunCommand raiseToL3 = new RunCommand(()-> {Robot.algae.extendArm();Robot.elevator.raiseTo(Constants.kLevel_3);}, Robot.elevator);
+    public static RunCommand raiseToL4 = new RunCommand(()-> {Robot.algae.extendArm();Robot.elevator.raiseTo(Constants.kLevel_4);}, Robot.elevator);
 
     public static RunCommand raiseElevator = new RunCommand(()-> Robot.elevator.raise(), Robot.elevator);
     public static RunCommand lowerElevator = new RunCommand(()-> Robot.elevator.lower(), Robot.elevator);
