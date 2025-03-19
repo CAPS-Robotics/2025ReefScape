@@ -72,7 +72,9 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
     
         public SwerveDriveTrainSubsystem(){   
         //Pose Estimator 
+        Navx.zeroYaw();
         swerveDrivePoseEstimator =  new SwerveDrivePoseEstimator(kinematics, Yaw, position, robotPose2d);
+        
             
     
         //PathPlanner Init
@@ -220,34 +222,51 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         }
         
     
-        public static void alignWithAprilTag(double targetYaw, double kPforDegreeAlign, double desired_distance, double kPforStrafeAlign, double targetRange){
+        public void alignWithAprilTag(double kPforDegreeAlign, double desired_distance, double kPforStrafeAlign, double targetRange){
            
-            double omega = (0-targetYaw)*kPforDegreeAlign*Constants.kSwerveDampner;
+            SmartDashboard.putNumber("align target Yaw", Camera.getTargetYaw());
+            double strafe = (Camera.getTargetYaw())*kPforDegreeAlign*Constants.kSwerveDampner;
         
-            double strafe =(desired_distance - targetRange)*kPforStrafeAlign*Constants.kSwerveDampner;
+            double omega =(desired_distance - targetRange)*kPforStrafeAlign*Constants.kSwerveDampner;
             
     
-            chassisSpeeds = new ChassisSpeeds(0, strafe, omega);
+            chassisSpeeds = new ChassisSpeeds(strafe, 0, omega);
+            setSpeed(chassisSpeeds);
+            
+        }
 
-    }
+        public void Align(){
+            alignWithAprilTag( 0.1, 0, 0, 0);
+            System.out.println("qwertyuiopoiuytrewqwertyuiopoiuytrewq   wertyuiop");
+        }
 
-    public Pose2d getPose(){
+        public void AlignLeft(){
+            alignWithAprilTag( 0.5, 0-1, 0.5, Camera.targetRange);
+            
+        }
 
-        return swerveDrivePoseEstimator.getEstimatedPosition();
+        public void AlignRight(){
+            alignWithAprilTag( 0.5, 01, 0.5, Camera.targetRange);
+        }
 
-    }
-    
-    public void resetPose2d(Pose2d resetPose2d){
-        swerveDrivePoseEstimator.resetPose(resetPose2d);
-    }
-
-    public ChassisSpeeds getcChassisSpeeds(){
-        swerveDrivePoseEstimator.update(getCurrentYaw(), updatePositions());
-        return chassisSpeeds;
-    }
-
-
-    public void setSpeed(ChassisSpeeds speed){
+            
+        public Pose2d getPose(){
+                    swerveDrivePoseEstimator.update(getCurrentYaw(), updatePositions());
+                    return swerveDrivePoseEstimator.getEstimatedPosition();
+            
+        }
+                
+        public void resetPose2d(Pose2d resetPose2d){
+                    swerveDrivePoseEstimator.resetPose(resetPose2d);
+        }
+            
+        public ChassisSpeeds getcChassisSpeeds(){
+                    swerveDrivePoseEstimator.update(getCurrentYaw(), updatePositions());
+                    return chassisSpeeds;
+        }
+            
+            
+        public  void setSpeed(ChassisSpeeds speed){
         // System.out.println("Setting states " );
         System.out.println("Speed: "+speed);
         states = kinematics.toSwerveModuleStates(speed);

@@ -60,7 +60,7 @@ public class IO {
         RatchetRelease.whileTrue(MMRCommands.RatchetDisable);
 
 
-        AlignButton.toggleOnTrue(MMRCommands.Align);
+        AlignButton.whileTrue(MMRCommands.Align);
         AlignLeftButton.onTrue(MMRCommands.AlignLeft);
         AlignRightButton.onTrue(MMRCommands.AlignRight);
 

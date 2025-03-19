@@ -15,6 +15,7 @@ import org.photonvision.targeting.TargetCorner;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
@@ -32,14 +33,15 @@ public class Camera extends SubsystemBase{
     public Transform3d pose; 
     public int AprilTag;
     boolean targetVisible = false;
-    public double targetYaw = 0.0;
-    public double targetRange = 0.0;
+    public static double targetYaw = 0.0;
+    public static double targetRange = 0.0;
+
 
     public Camera(String name) {
 
         cameraName = name;
         camera = new PhotonCamera(cameraName);
-        // setDefaultCommand(new RunCommand(()-> Robot.camera.setData(), this ));
+        setDefaultCommand(new RunCommand(()-> Robot.camera.setData(), this ));
 
     }
 
@@ -61,7 +63,7 @@ public class Camera extends SubsystemBase{
                                 PhotonUtils.calculateDistanceToTargetMeters(
                                         Units.inchesToMeters(10), // Measured with a tape measure, or in CAD.
                                         0.17, // From 2024 game manual for ID 7
-                                        Units.degreesToRadians(-30.0), // Measured with a protractor, or in CAD.
+                                        Units.degreesToRadians(90), // Measured with a protractor, or in CAD.
                                         Units.degreesToRadians(target.getPitch()));
 
                         targetVisible = true;
@@ -69,21 +71,22 @@ public class Camera extends SubsystemBase{
                 }
             }
         }
- 
+    
+        SmartDashboard.putNumber("Target Yaw", targetYaw);
+        SmartDashboard.putNumber("Target Range", targetRange);
+
   
     }
 
-    public void Align(){
-        SwerveDriveTrainSubsystem.alignWithAprilTag(targetYaw, 0.5, 0, 0.5, targetRange);
+    public static double getTargetYaw(){
+
+        return targetYaw;
     }
 
-    public void AlignRight(){
-        SwerveDriveTrainSubsystem.alignWithAprilTag(targetYaw, 0.5, 1, 0.5, targetRange);
+    public static double getTargetRange(){
+        return targetRange;
     }
     
 
-    public void AlignLeft(){
-        SwerveDriveTrainSubsystem.alignWithAprilTag(targetYaw, 0.5, -1, 0.5, targetRange);
-        
-    }
+    
 }

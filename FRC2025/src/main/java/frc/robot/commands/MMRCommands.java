@@ -53,9 +53,9 @@ public class MMRCommands {
 
 
     //Alignment
-    public static RunCommand Align = new RunCommand(()-> Robot.camera.Align(), Robot.camera);
-    public static RunCommand AlignLeft = new RunCommand(()-> Robot.camera.AlignLeft(), Robot.camera);
-    public static RunCommand AlignRight = new RunCommand(()-> Robot.camera.AlignRight(), Robot.camera);
+    public static RunCommand Align = new RunCommand(()-> Robot.swerveTrain.Align(), Robot.swerveTrain);
+    public static RunCommand AlignLeft = new RunCommand(()-> Robot.swerveTrain.AlignLeft(), Robot.swerveTrain);
+    public static RunCommand AlignRight = new RunCommand(()-> Robot.swerveTrain.AlignRight(), Robot.swerveTrain);
 
 
 }
