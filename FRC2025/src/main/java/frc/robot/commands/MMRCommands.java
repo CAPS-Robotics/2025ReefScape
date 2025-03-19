@@ -39,7 +39,7 @@ public class MMRCommands {
     
     //Climb Commands
     public static RunCommand raiseClimb = new RunCommand(()-> Robot.climb.raise(), Robot.climb);
-    public static WaitCommand Wait = new WaitCommand(0.5);
+    public static WaitCommand Wait = new WaitCommand(1);
 
     
     public static RunCommand lowerClimb = new RunCommand(()-> Robot.climb.lower(), Robot.climb);
@@ -57,5 +57,9 @@ public class MMRCommands {
     public static RunCommand AlignLeft = new RunCommand(()-> Robot.swerveTrain.AlignLeft(), Robot.swerveTrain);
     public static RunCommand AlignRight = new RunCommand(()-> Robot.swerveTrain.AlignRight(), Robot.swerveTrain);
 
+    //Auto
+    public static InstantCommand calcDistance = new InstantCommand(()-> Robot.swerveTrain.calcStartingDistance(88), Robot.swerveTrain);
+    public static RunCommand driveAuto = new RunCommand(()-> Robot.swerveTrain.driveAuto(0.1), Robot.swerveTrain);
 
+    public static SequentialCommandGroup auton = new SequentialCommandGroup(calcDistance, driveAuto);
 }

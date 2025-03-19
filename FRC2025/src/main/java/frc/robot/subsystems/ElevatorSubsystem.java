@@ -133,12 +133,14 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
         }
       }else if (motorSpeed < 0){
 
-        if(bottomlimitSwitch.get()){
+        if(bottomlimitSwitch.get() == true){
           elevatorMotor.set(motorSpeed);
         }else{
+          
           elevatorMotor.set(0);
           System.out.println("Bottom Limit Switch Pressed");
           elevatorMotorEncoder.setPosition(0);
+         
 
           
         }
@@ -149,7 +151,7 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
 
       currentRotations = elevatorMotorEncoder.getPosition();
       System.out.println("Encoder Value: "+currentRotations);
-      System.out.println("Bottom Limit Switch!!!!!!!!!!!!!!!!!!!!!: "+bottomlimitSwitch.get());
+      System.out.println("Bottom Limit Switch!!!!!!!!!!!!!!!!!!!!!: "+ bottomlimitSwitch.get());
 
     }
 

@@ -33,10 +33,10 @@ public class IO {
     public JoystickButton RatchetRelease = new JoystickButton(driveController, 7);
     public JoystickButton RatchetEngage = new JoystickButton(driveController, 8);
 
-    //Align 
+    // //Align 
     public JoystickButton AlignButton = new JoystickButton(driveController, 1);
-    public JoystickButton AlignLeftButton = new JoystickButton(driveController, 2);
-    public JoystickButton AlignRightButton = new JoystickButton(driveController, 4);
+    public JoystickButton AlignLeftButton = new JoystickButton(driveController, 5);
+    public JoystickButton AlignRightButton = new JoystickButton(driveController, 6);
 
 
     
@@ -49,8 +49,8 @@ public class IO {
         bumperButton.onFalse(MMRCommands.closeServo); 
 
 
-        A_Button.whileTrue(MMRCommands.raiseToL2);
-        B_Button.whileTrue(MMRCommands.raiseToL3);
+        A_Button.onTrue(MMRCommands.raiseToL2);
+        B_Button.onTrue(MMRCommands.raiseToL3);
         Y_Button.onTrue(MMRCommands.raiseToL4);
         X_Button.onTrue(MMRCommands.zero);
 

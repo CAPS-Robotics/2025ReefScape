@@ -27,7 +27,7 @@ import frc.robot.commands.MMRCommands;
  */
 public class Robot extends TimedRobot { 
   public Robot(){
-    NamedCommands.registerCommand("raiseToL4", MMRCommands.raiseToL4);
+    NamedCommands.registerCommand("Raise to L4", MMRCommands.raiseToL4);
     NamedCommands.registerCommand("Drop Coral",MMRCommands.releaseServo);
     NamedCommands.registerCommand("Close Servo", MMRCommands.closeServo);
     NamedCommands.registerCommand("Bottom", MMRCommands.zero);
@@ -36,7 +36,8 @@ public class Robot extends TimedRobot {
   
   public Autos auto = new Autos();
   private Command m_autonomousCommand;
-  private Command Starting;
+  
+
   public static MecanumDriveTrainSubsystem mecanumTrain = new MecanumDriveTrainSubsystem();
   public static SwerveDriveTrainSubsystem swerveTrain = new SwerveDriveTrainSubsystem();
   public static ElevatorSubsystem elevator = new ElevatorSubsystem();
@@ -50,7 +51,7 @@ public class Robot extends TimedRobot {
       // to first load your paths/autos when code starts, then return the
       // pre-loaded auto/path
 
-      return new PathPlannerAuto("Test Auto");
+      return new PathPlannerAuto("Heartland Auto");
     }
   
     
@@ -97,19 +98,22 @@ public class Robot extends TimedRobot {
     /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
     @Override
     public void autonomousInit() {
-        
-      Starting = MMRCommands.Reset;
-      m_autonomousCommand = Robot.getAutonomousCommand();
+      m_autonomousCommand = MMRCommands.auton;
+    
+
+      
       // schedule the autonomous command (example)
       if (m_autonomousCommand != null) {
-        Starting.schedule();
         m_autonomousCommand.schedule();
+       
       }
     }
   
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
+
+      
    
   }
 

@@ -19,6 +19,7 @@ import edu.wpi.first.math.kinematics.Kinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
@@ -65,6 +66,8 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
     SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeft, frontRight, backLeft, backRight);
 
     SwerveDrivePoseEstimator swerveDrivePoseEstimator; 
+    
+    double distanceAprilTag;
 
     static ChassisSpeeds chassisSpeeds = new ChassisSpeeds(); 
     
@@ -220,6 +223,24 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
     
     
         }
+
+        public void calcStartingDistance(double StartingDistanceFromAprilTag){
+
+            distanceAprilTag = StartingDistanceFromAprilTag*Math.tan(Camera.getTargetYaw());
+
+        }
+        public void driveAuto(double kPforDistance){
+            System.out.println("IN THE AUTO DRIVE");
+
+            double distanceToAprilTag = distanceAprilTag/Math.tan(Camera.getTargetYaw());
+
+
+            double forward = (distanceToAprilTag)*kPforDistance*Constants.kSwerveDampner;
+        
+            chassisSpeeds = new ChassisSpeeds(0, 0.1, 0);
+            setSpeed(chassisSpeeds);
+          
+        }
         
     
         public void alignWithAprilTag(double kPforDegreeAlign, double desired_distance, double kPforStrafeAlign, double targetRange){
@@ -235,18 +256,31 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
             
         }
 
+        public void alignWithAprilTag(double DesiredYaw, double kPforDegreeAlign, double desired_distance, double kPforStrafeAlign, double targetRange){
+           
+            SmartDashboard.putNumber("align target Yaw", Camera.getTargetYaw());
+            double strafe = (Camera.getTargetYaw()-DesiredYaw)*kPforDegreeAlign*Constants.kSwerveDampner;
+        
+            double omega =(desired_distance - targetRange)*kPforStrafeAlign*Constants.kSwerveDampner;
+            
+    
+            chassisSpeeds = new ChassisSpeeds(strafe, 0, omega);
+            setSpeed(chassisSpeeds);
+            
+        }
+
         public void Align(){
             alignWithAprilTag( 0.1, 0, 0, 0);
             System.out.println("qwertyuiopoiuytrewqwertyuiopoiuytrewq   wertyuiop");
         }
 
         public void AlignLeft(){
-            alignWithAprilTag( 0.5, 0-1, 0.5, Camera.targetRange);
+            alignWithAprilTag( 22.5, 0.1, 0, 0.5, Camera.targetRange);
             
         }
 
         public void AlignRight(){
-            alignWithAprilTag( 0.5, 01, 0.5, Camera.targetRange);
+            alignWithAprilTag(-13, 0.1, 0, 0.5, Camera.targetRange);
         }
 
             
