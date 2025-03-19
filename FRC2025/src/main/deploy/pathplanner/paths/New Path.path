@@ -1,0 +1,109 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.179545454545455,
+        "y": 6.50294034090909
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.429545454545455,
+        "y": 6.50294034090909
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.855384615384615,
+        "y": 4.4687820512820515
+      },
+      "prevControl": {
+        "x": 7.257884615384615,
+        "y": 4.406858974358975
+      },
+      "nextControl": {
+        "x": 6.564227427366037,
+        "y": 4.513575464823371
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.379551282051282,
+        "y": 6.728974358974359
+      },
+      "prevControl": {
+        "x": 5.627243589743589,
+        "y": 7.069551282051282
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0,
+      "rotationDegrees": 0.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Raise To L2",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Raise To L2"
+        }
+      }
+    },
+    {
+      "name": "Drop Coral",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Drop Coral"
+        }
+      }
+    },
+    {
+      "name": "Close Servo",
+      "waypointRelativePos": 1.2,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "closeServo"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.5,
+    "maxAcceleration": 1.5,
+    "maxAngularVelocity": 270.0,
+    "maxAngularAcceleration": 360.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -178.99491399474581
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -178.87174466754917
+  },
+  "useDefaultConstraints": true
+}

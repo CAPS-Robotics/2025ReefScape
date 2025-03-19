@@ -28,7 +28,7 @@ public class MecanumDriveTrainSubsystem extends SubsystemBase {
   public  MecanumDriveTrainSubsystem(){
     // frontRightMotor.setInverted(true);
     // backRightMotor.setInverted(true);
-  setDefaultCommand(new RunCommand(() -> Robot.mecanumTrain.driveT(Robot.io.driveController), this) );
+  setDefaultCommand(new RunCommand(() -> Robot.mecanumTrain.driveT(Robot.io.controlController), this) );
   }
 
 
@@ -39,8 +39,8 @@ public class MecanumDriveTrainSubsystem extends SubsystemBase {
 
     if(Math.abs(ySpeed) < 0.1) ySpeed = 0;
     if(Math.abs(xSpeed) < 0.1) xSpeed = 0;
-    System.out.println("X speed: "+xSpeed);
-    System.out.println("y speed: "+ySpeed);
+    // System.out.println("X speed: "+xSpeed);
+    // System.out.println("y speed: "+ySpeed);
 
 
     
