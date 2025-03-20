@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -91,6 +92,7 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
     public void getEncoder(){
 
      System.out.println("Encoder Value!!!!: "+elevatorMotorEncoder.getPosition());
+     SmartDashboard.putNumber("elevator ENcoder", elevatorMotorEncoder.getPosition());
      
 
     }

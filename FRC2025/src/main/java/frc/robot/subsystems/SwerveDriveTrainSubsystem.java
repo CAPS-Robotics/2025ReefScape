@@ -275,12 +275,12 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         }
 
         public void AlignLeft(){
-            alignWithAprilTag( 22.5, 0.1, 0, 0.5, Camera.targetRange);
+            alignWithAprilTag( 25, 0.1, 0, 0.5, Camera.targetRange);
             
         }
 
         public void AlignRight(){
-            alignWithAprilTag(-13, 0.1, 0, 0.5, Camera.targetRange);
+            alignWithAprilTag(-14.5, 0.1, 0, 0.5, Camera.targetRange);
         }
 
             
