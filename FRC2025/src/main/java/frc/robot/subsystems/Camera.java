@@ -56,7 +56,7 @@ public class Camera extends SubsystemBase{
             if (result.hasTargets()) {
                 // At least one AprilTag was seen by the camera
                 for (var target : result.getTargets()) {
-                    if (target.getFiducialId() == 7 ) {
+                    if ((target.getFiducialId() < 5 && target.getFiducialId() > 12) || (target.getFiducialId() < 16 && target.fiducialId > 23)) {
                         // Found Tag 7, record its information
                         targetYaw = target.getYaw();
                         targetRange =

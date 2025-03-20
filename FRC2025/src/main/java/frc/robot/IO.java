@@ -19,19 +19,19 @@ public class IO {
     public XboxController controlController = new XboxController(1);
 
     //Elevator Buttons
-    public JoystickButton A_Button = new JoystickButton(controlController, 1);
-    public JoystickButton B_Button = new JoystickButton(controlController, 2);
-    public JoystickButton X_Button = new JoystickButton(controlController, 3);
-    public JoystickButton Y_Button = new JoystickButton(controlController, 4);
+    public JoystickButton l2Button = new JoystickButton(controlController, 1);
+    public JoystickButton l3Button = new JoystickButton(controlController, 4);
+    public JoystickButton l4Button = new JoystickButton(controlController, 5);
+    public JoystickButton zeroButton = new JoystickButton(controlController, 2);
 
     // Servo
-    public JoystickButton bumperButton = new JoystickButton(controlController, 5);
+    public JoystickButton servoButton = new JoystickButton(controlController, 3);
 
     //Algae
-    public JoystickButton raiseButton = new JoystickButton(controlController, 7);
-    public JoystickButton lowerButton = new JoystickButton(controlController, 8);
-    public JoystickButton RatchetRelease = new JoystickButton(driveController, 7);
-    public JoystickButton RatchetEngage = new JoystickButton(driveController, 8);
+    // public JoystickButton raiseButton = new JoystickButton(controlController, 7);
+    // public JoystickButton lowerButton = new JoystickButton(controlController, 8);
+    // public JoystickButton RatchetRelease = new JoystickButton(driveController, 7);
+    // public JoystickButton RatchetEngage = new JoystickButton(driveController, 8);
 
     // //Align 
     public JoystickButton AlignButton = new JoystickButton(driveController, 1);
@@ -45,22 +45,22 @@ public class IO {
     public IO(){
 
        
-        bumperButton.onTrue(MMRCommands.releaseServo);
-        bumperButton.onFalse(MMRCommands.closeServo); 
+        servoButton.onTrue(MMRCommands.releaseServo);
+        servoButton.onFalse(MMRCommands.closeServo); 
 
 
-        A_Button.onTrue(MMRCommands.raiseToL2);
-        B_Button.onTrue(MMRCommands.raiseToL3);
-        Y_Button.onTrue(MMRCommands.raiseToL4);
-        X_Button.onTrue(MMRCommands.zero);
+        l2Button.onTrue(MMRCommands.raiseToL2);
+        l3Button.onTrue(MMRCommands.raiseToL3);
+        l4Button.onTrue(MMRCommands.raiseToL4);
+        zeroButton.onTrue(MMRCommands.zero);
 
-        raiseButton.whileTrue(MMRCommands.raiseClimb);
-        lowerButton.whileTrue(MMRCommands.LowerCLimb);
-        RatchetEngage.whileTrue(MMRCommands.RatchetEnable);
-        RatchetRelease.whileTrue(MMRCommands.RatchetDisable);
+        // raiseButton.whileTrue(MMRCommands.raiseClimb);
+        // lowerButton.whileTrue(MMRCommands.LowerCLimb);
+        // RatchetEngage.whileTrue(MMRCommands.RatchetEnable);
+        // RatchetRelease.whileTrue(MMRCommands.RatchetDisable);
 
 
-        AlignButton.whileTrue(MMRCommands.Align);
+        AlignButton.onTrue(MMRCommands.Align);
         AlignLeftButton.onTrue(MMRCommands.AlignLeft);
         AlignRightButton.onTrue(MMRCommands.AlignRight);
 
