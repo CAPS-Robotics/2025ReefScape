@@ -10,6 +10,8 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -36,23 +38,25 @@ public class Robot extends TimedRobot {
   
   public Autos auto = new Autos();
   private Command m_autonomousCommand;
+  private Command Command2;
+  private Command ReleaseServo;
   
 
   public static MecanumDriveTrainSubsystem mecanumTrain = new MecanumDriveTrainSubsystem();
   public static SwerveDriveTrainSubsystem swerveTrain = new SwerveDriveTrainSubsystem();
   public static ElevatorSubsystem elevator = new ElevatorSubsystem();
-  public static ClimbSubsystem climb = new ClimbSubsystem();
+  // public static ClimbSubsystem climb = new ClimbSubsystem();
   public static Camera camera = new Camera("Front Camera");
-  public static AlgaeSubsystem algae = new AlgaeSubsystem();
+  // public static AlgaeSubsystem algae = new AlgaeSubsystem();
   public NamedCommands AutoCommands = new NamedCommands();
   
-  public static Command getAutonomousCommand() {
-      // This method loads the auto when it is called, however, it is recommended
-      // to first load your paths/autos when code starts, then return the
-      // pre-loaded auto/path
+  // public static Command getAutonomousCommand() {
+  //     // This method loads the auto when it is called, however, it is recommended
+  //     // to first load your paths/autos when code starts, then return the
+  //     // pre-loaded auto/path
 
-      return new PathPlannerAuto("Heartland Auto");
-    }
+  //     return new PathPlannerAuto("Heartland Auto");
+  //   }
   
     
     
@@ -98,21 +102,24 @@ public class Robot extends TimedRobot {
     /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
     @Override
     public void autonomousInit() {
-      m_autonomousCommand = MMRCommands.auton;
-    
+      m_autonomousCommand = MMRCommands.driveAuto.withTimeout(3);
+      Command2 = MMRCommands.Raise;
+      ReleaseServo = MMRCommands.autoCommand;
 
+    
+   
       
       // schedule the autonomous command (example)
       if (m_autonomousCommand != null) {
         m_autonomousCommand.schedule();
-       
+        
+        Command2.schedule();          
       }
     }
   
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
-
       
    
   }

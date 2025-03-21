@@ -20,8 +20,8 @@ public class MMRCommands {
     //Algae Commands
     // public static RunCommand ForwardAlgae = new RunCommand(()-> Robot.algae.RemoveAlgae(1), Robot.algae);
     // public static RunCommand ReverseAlgae = new RunCommand(()-> Robot.algae.resetArm(), Robot.algae);
-    public static RunCommand Extend  = new RunCommand(()-> Robot.algae.extendArm(), Robot.algae);
-    public static RunCommand Reset = new RunCommand(()-> Robot.algae.ResetArm(2.4), Robot.algae);
+    // public static RunCommand Extend  = new RunCommand(()-> Robot.algae.extendArm(), Robot.algae);
+    // public static RunCommand Reset = new RunCommand(()-> Robot.algae.ResetArm(2.4), Robot.algae);
 
     //Elevator Commands
     public static RunCommand raiseToL2 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_2), Robot.elevator);
@@ -37,16 +37,16 @@ public class MMRCommands {
     public static InstantCommand releaseServo = new InstantCommand(()-> Robot.elevator.releaseServo(), Robot.elevator);
     public static InstantCommand closeServo = new InstantCommand(()-> Robot.elevator.closedServo(), Robot.elevator);
     
-    //Climb Commands
-    public static RunCommand raiseClimb = new RunCommand(()-> Robot.climb.raise(), Robot.climb);
-    public static WaitCommand Wait = new WaitCommand(1);
+    // //Climb Commands
+    // public static RunCommand raiseClimb = new RunCommand(()-> Robot.climb.raise(), Robot.climb);
+    public static WaitCommand Wait = new WaitCommand(3);
 
     
-    public static RunCommand lowerClimb = new RunCommand(()-> Robot.climb.lower(), Robot.climb);
-    public static InstantCommand RatchetEnable = new InstantCommand(()-> Robot.climb.Ratchet(), Robot.climb);
-    public static InstantCommand RatchetDisable = new InstantCommand(()-> Robot.climb.switchRatchet(), Robot.climb);
+    // public static RunCommand lowerClimb = new RunCommand(()-> Robot.climb.lower(), Robot.climb);
+    // public static InstantCommand RatchetEnable = new InstantCommand(()-> Robot.climb.Ratchet(), Robot.climb);
+    // public static InstantCommand RatchetDisable = new InstantCommand(()-> Robot.climb.switchRatchet(), Robot.climb);
 
-    public static SequentialCommandGroup LowerCLimb = new SequentialCommandGroup(RatchetEnable, Wait, lowerClimb );
+    // public static SequentialCommandGroup LowerCLimb = new SequentialCommandGroup(RatchetEnable, Wait, lowerClimb );
 
     //Elevator Stop
     public static RunCommand stop = new RunCommand(()-> Robot.elevator.stop(), Robot.elevator);
@@ -60,6 +60,14 @@ public class MMRCommands {
     //Auto
     public static InstantCommand calcDistance = new InstantCommand(()-> Robot.swerveTrain.calcStartingDistance(88), Robot.swerveTrain);
     public static RunCommand driveAuto = new RunCommand(()-> Robot.swerveTrain.driveAuto(0.1), Robot.swerveTrain);
+    public static RunCommand Raise = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_4), Robot.elevator);
 
-    public static SequentialCommandGroup auton = new SequentialCommandGroup(calcDistance, driveAuto);
+
+
+    public static SequentialCommandGroup autoCommand = new SequentialCommandGroup(Wait, new InstantCommand(()-> Robot.elevator.releaseServo(), Robot.elevator) );
+    // public static SequentialCommandGroup servo = new SequentialCommandGroup(Wait, releaseServo);
+   
+
+    // public static Command command = driveAuto.withTimeout(1);}
+
 }

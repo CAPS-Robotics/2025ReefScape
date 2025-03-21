@@ -24,7 +24,7 @@ public class ClimbSubsystem extends SubsystemBase {
   public ClimbSubsystem() {
     System.out.println("qwertyuioppoiuytrewqertyuiopoiuytr");
 
-    setDefaultCommand(new RunCommand(()->Robot.climb.stop(), this));
+    // setDefaultCommand(new RunCommand(()->Robot.climb.stop(), this));
 
   }
 

@@ -235,9 +235,10 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
             double distanceToAprilTag = distanceAprilTag/Math.tan(Camera.getTargetYaw());
 
 
+
             double forward = (distanceToAprilTag)*kPforDistance*Constants.kSwerveDampner;
         
-            chassisSpeeds = new ChassisSpeeds(0, 0.1, 0);
+            chassisSpeeds = new ChassisSpeeds(0, 0.3, 0);
             setSpeed(chassisSpeeds);
           
         }
@@ -280,7 +281,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         }
 
         public void AlignRight(){
-            alignWithAprilTag(-14.5, 0.1, 0, 0.5, Camera.targetRange);
+            alignWithAprilTag(-20, 0.1, 0, 0.5, Camera.targetRange);
         }
 
             

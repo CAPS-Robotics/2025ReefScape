@@ -41,9 +41,9 @@ public final class Constants {
 
     //Elevator Position(rotations)
     public static final double kLevel_1 = 0;
-    public static final double kLevel_2 = 26;
-    public static final double kLevel_3 = 46;
-    public static final double kLevel_4 = 76;
+    public static final double kLevel_2 = 28;
+    public static final double kLevel_3 = 47;
+    public static final double kLevel_4 = 78;
 
 
 
