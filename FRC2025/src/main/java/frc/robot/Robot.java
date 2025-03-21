@@ -17,6 +17,7 @@ import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.MecanumDriveTrainSubsystem;
+import frc.robot.subsystems.ServoSubsystem;
 import frc.robot.subsystems.SwerveDriveTrainSubsystem;
 import frc.robot.commands.Autos;
 import frc.robot.commands.MMRCommands;
@@ -49,6 +50,7 @@ public class Robot extends TimedRobot {
   public static Camera camera = new Camera("Front Camera");
   // public static AlgaeSubsystem algae = new AlgaeSubsystem();
   public NamedCommands AutoCommands = new NamedCommands();
+  public static ServoSubsystem servo = new ServoSubsystem();
   
   // public static Command getAutonomousCommand() {
   //     // This method loads the auto when it is called, however, it is recommended
@@ -103,8 +105,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
       m_autonomousCommand = MMRCommands.driveAuto.withTimeout(3);
-      Command2 = MMRCommands.Raise;
-      ReleaseServo = MMRCommands.autoCommand;
+      Command2 = MMRCommands.auton;
 
     
    
@@ -112,8 +113,12 @@ public class Robot extends TimedRobot {
       // schedule the autonomous command (example)
       if (m_autonomousCommand != null) {
         m_autonomousCommand.schedule();
-        
-        Command2.schedule();          
+        Command2.schedule();
+
+        // if (m_autonomousCommand.isFinished()){
+        //   System.out.println();
+        //   Command2.schedule();
+        // }
       }
     }
   

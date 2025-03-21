@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -34,8 +35,8 @@ public class MMRCommands {
     public static RunCommand zero = new RunCommand(()-> Robot.elevator.zero(), Robot.elevator);
     
     //Servo Commands
-    public static InstantCommand releaseServo = new InstantCommand(()-> Robot.elevator.releaseServo(), Robot.elevator);
-    public static InstantCommand closeServo = new InstantCommand(()-> Robot.elevator.closedServo(), Robot.elevator);
+    public static InstantCommand releaseServo = new InstantCommand(()-> Robot.servo.releaseServo(), Robot.servo);
+    public static InstantCommand closeServo = new InstantCommand(()-> Robot.servo.closedServo(), Robot.servo);
     
     // //Climb Commands
     // public static RunCommand raiseClimb = new RunCommand(()-> Robot.climb.raise(), Robot.climb);
@@ -62,10 +63,12 @@ public class MMRCommands {
     public static RunCommand driveAuto = new RunCommand(()-> Robot.swerveTrain.driveAuto(0.1), Robot.swerveTrain);
     public static RunCommand Raise = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_4), Robot.elevator);
 
+    public static InstantCommand auton = new InstantCommand(()-> Robot.servo.releaseServo(), Robot.servo);
 
 
-    public static SequentialCommandGroup autoCommand = new SequentialCommandGroup(Wait, new InstantCommand(()-> Robot.elevator.releaseServo(), Robot.elevator) );
-    // public static SequentialCommandGroup servo = new SequentialCommandGroup(Wait, releaseServo);
+
+    // public static ParallelCommandGroup autoCommand = new ParallelCommandGroup(Raise, new InstantCommand(()-> Robot.servo.releaseServo(), Robot.servo));
+    // public static SequentialCommandGroup servo = new SequentialCommandGroup(Raise, new WaitCommand(3), new InstantCommand(()-> Robot.servo.releaseServo(), Robot.servo), Robot.servo);
    
 
     // public static Command command = driveAuto.withTimeout(1);}
