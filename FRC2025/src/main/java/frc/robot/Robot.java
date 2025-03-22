@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
   private boolean autoServoFlag = false;
   private int cnt =0;
   private Command Align;
+  private boolean AlignFlag = false;
 
   
 
@@ -134,24 +135,28 @@ public class Robot extends TimedRobot {
       public void autonomousPeriodic() {
         System.out.println("Inside auto-periodic!! "+autoServoFlag);
 
-        if (m_autonomousCommand.isScheduled()){
-          // Align.schedule();
-        }
+        // if (m_autonomousCommand.isFinished()){
+        //   if(!AlignFlag){
+        //     Align.schedule();
+        //     AlignFlag = true;
+        //   }
+    
+        // }
 
-        try {
-          if(!autoServoFlag)
-           {
+        // try {
+        //   if(!autoServoFlag)
+        //    {
 
-              System.out.println("Inside auto-periodic!! running release. counter="+(cnt++));
-              autoServoFlag = true;
+        //       System.out.println("Inside auto-periodic!! running release. counter="+(cnt++));
+        //       autoServoFlag = true;
              
-              // Align.schedule();
-              ReleaseServo.schedule();
+        //       // Align.schedule();
+        //       ReleaseServo.schedule();
   
-           }
-        } catch (Exception e) {
-             System.err.println(e.getStackTrace());
-        }
+        //    }
+        // } catch (Exception e) {
+        //      System.err.println(e.getStackTrace());
+        // }
            
    
   }//end of auto periodic

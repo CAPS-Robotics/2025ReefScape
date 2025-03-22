@@ -74,7 +74,7 @@ public final class Constants {
 
 
     //Dampners 
-    public static final double kSwerveDampner = 0.1;
+    public static final double kSwerveDampner = 0.2;
     public static final double kElevatorDampner = 0.5;
     public static final double kClimbDampner = 0.5;
     public static final double kAlgaeDampner = 0.2;
