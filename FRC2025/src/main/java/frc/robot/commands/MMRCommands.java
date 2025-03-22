@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -62,13 +63,15 @@ public class MMRCommands {
     public static InstantCommand calcDistance = new InstantCommand(()-> Robot.swerveTrain.calcStartingDistance(88), Robot.swerveTrain);
     public static RunCommand driveAuto = new RunCommand(()-> Robot.swerveTrain.driveAuto(0.1), Robot.swerveTrain);
     public static RunCommand Raise = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_4), Robot.elevator);
+    public static RunCommand AutonAlign = new RunCommand(()-> Robot.swerveTrain.AlignLeft(), Robot.swerveTrain);
+
 
     public static InstantCommand auton = new InstantCommand(()-> Robot.servo.releaseServo(), Robot.servo);
 
-
+    // public static ParallelRaceGroup drivecommand =  new ParallelRaceGroup(()-> { Robot.swerveTrain.driveAuto(0.1)}, Robot.swerveTrain).withTimeout(3);
 
     // public static ParallelCommandGroup autoCommand = new ParallelCommandGroup(Raise, new InstantCommand(()-> Robot.servo.releaseServo(), Robot.servo));
-    // public static SequentialCommandGroup servo = new SequentialCommandGroup(Raise, new WaitCommand(3), new InstantCommand(()-> Robot.servo.releaseServo(), Robot.servo), Robot.servo);
+    public static SequentialCommandGroup servo = new SequentialCommandGroup(new WaitCommand(3), new InstantCommand(()-> Robot.servo.releaseServo(), Robot.servo));
    
 
     // public static Command command = driveAuto.withTimeout(1);}

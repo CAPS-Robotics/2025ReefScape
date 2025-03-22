@@ -41,6 +41,10 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command Command2;
   private Command ReleaseServo;
+  private boolean autoServoFlag = false;
+  private int cnt =0;
+  private Command Align;
+
   
 
   public static MecanumDriveTrainSubsystem mecanumTrain = new MecanumDriveTrainSubsystem();
@@ -50,84 +54,107 @@ public class Robot extends TimedRobot {
   public static Camera camera = new Camera("Front Camera");
   // public static AlgaeSubsystem algae = new AlgaeSubsystem();
   public NamedCommands AutoCommands = new NamedCommands();
-  public static ServoSubsystem servo = new ServoSubsystem();
-  
-  // public static Command getAutonomousCommand() {
-  //     // This method loads the auto when it is called, however, it is recommended
-  //     // to first load your paths/autos when code starts, then return the
-  //     // pre-loaded auto/path
-
-  //     return new PathPlannerAuto("Heartland Auto");
-  //   }
-  
+    public static ServoSubsystem servo = new ServoSubsystem();
     
+    // public static Command getAutonomousCommand() {
+    //     // This method loads the auto when it is called, however, it is recommended
+    //     // to first load your paths/autos when code starts, then return the
+    //     // pre-loaded auto/path
+  
+    //     return new PathPlannerAuto("Heartland Auto");
+    //   }
     
-  
-   // public static RobotContainer robotContainer = new RobotContainer();
-    public static IO io = new IO();
-   // private RobotContainer m_robotContainer;
-  
-    /**
-     * This function is run when the robot is first started up and should be used for any
-     * initialization code.
-     */
-    @Override
-    public void robotInit() {
-           // our RobotContainer.  This will perform all our button bindings, and put our
-      // autonomous chooser on the dashboard.
-     // m_robotContainer = new RobotContainer();
-    }
-  
-    /**
-     * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
-     * that you want ran during disabled, autonomous, teleoperated and test.
-     *
-     * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-     * SmartDashboard integrated updating.
-     */
-    @Override
-    public void robotPeriodic() {
-      // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-      // commands, running already-scheduled commands, removing finished or interrupted commands,
-      // and running subsystem periodic() methods.  This must be called from the robot's periodic
-      // block in order for anything in the Command-based framework to work.
-      CommandScheduler.getInstance().run();
-    }
-  
-    /** This function is called once each time the robot enters Disabled mode. */
-    @Override
-    public void disabledInit() {}
-  
-    @Override
-    public void disabledPeriodic() {}
-  
-    /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
-    @Override
-    public void autonomousInit() {
-      m_autonomousCommand = MMRCommands.driveAuto.withTimeout(3);
-      Command2 = MMRCommands.auton;
-
-    
-   
       
-      // schedule the autonomous command (example)
-      if (m_autonomousCommand != null) {
-        m_autonomousCommand.schedule();
-        Command2.schedule();
-
-        // if (m_autonomousCommand.isFinished()){
-        //   System.out.println();
-        //   Command2.schedule();
-        // }
+      
+    
+     // public static RobotContainer robotContainer = new RobotContainer();
+      public static IO io = new IO();
+     // private RobotContainer m_robotContainer;
+    
+      /**
+       * This function is run when the robot is first started up and should be used for any
+       * initialization code.
+       */
+      @Override
+      public void robotInit() {
+             // our RobotContainer.  This will perform all our button bindings, and put our
+        // autonomous chooser on the dashboard.
+       // m_robotContainer = new RobotContainer();
       }
-    }
-  
-    /** This function is called periodically during autonomous. */
-    @Override
-    public void autonomousPeriodic() {
+    
+      /**
+       * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
+       * that you want ran during disabled, autonomous, teleoperated and test.
+       *
+       * <p>This runs after the mode specific periodic functions, but before LiveWindow and
+       * SmartDashboard integrated updating.
+       */
+      @Override
+      public void robotPeriodic() {
+        // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
+        // commands, running already-scheduled commands, removing finished or interrupted commands,
+        // and running subsystem periodic() methods.  This must be called from the robot's periodic
+        // block in order for anything in the Command-based framework to work.
+        CommandScheduler.getInstance().run();
+      }
+    
+      /** This function is called once each time the robot enters Disabled mode. */
+      @Override
+      public void disabledInit() {}
+    
+      @Override
+      public void disabledPeriodic() {}
+    
+      /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
+      @Override
+      public void autonomousInit() {
+        m_autonomousCommand = MMRCommands.driveAuto.withTimeout(3);
+        Command2 = MMRCommands.Raise;
+        ReleaseServo = MMRCommands.servo;
+        Align = MMRCommands.AutonAlign.withTimeout(1);
       
+        System.out.println("Inside auto-init!! assigned commands");
+        
+        // schedule the autonomous command (example)
+        if (m_autonomousCommand != null) {
+          System.out.println("Inside auto-init!! running DriveAuto");
+          m_autonomousCommand.schedule();
+          System.out.println("Inside auto-init!! running raise Auto");
+          // Command2.schedule();
+  
+          // if (m_autonomousCommand.isFinished()){
+          //   System.out.println();
+          //   Command2.schedule();
+          // }
+        }
+      }
+    
+      /** This function is called periodically during autonomous. */
+      @Override
+      public void autonomousPeriodic() {
+        System.out.println("Inside auto-periodic!! "+autoServoFlag);
+
+        if (m_autonomousCommand.isScheduled()){
+          // Align.schedule();
+        }
+
+        try {
+          if(!autoServoFlag)
+           {
+
+              System.out.println("Inside auto-periodic!! running release. counter="+(cnt++));
+              autoServoFlag = true;
+             
+              // Align.schedule();
+              ReleaseServo.schedule();
+  
+           }
+        } catch (Exception e) {
+             System.err.println(e.getStackTrace());
+        }
+           
    
-  }
+  }//end of auto periodic
 
 
   @Override
