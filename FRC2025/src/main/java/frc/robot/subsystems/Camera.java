@@ -5,13 +5,18 @@
 package frc.robot.subsystems;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
@@ -30,11 +35,14 @@ public class Camera extends SubsystemBase{
     public double yaw;
     public double pitch;
     public double area;
-    public Transform3d pose; 
+    public EstimatedRobotPose pose; 
+    public Pose3d position;
     public int AprilTag;
     boolean targetVisible = false;
     public static double targetYaw = 0.0;
     public static double targetRange = 0.0;
+    // public PhotonPoseEstimator photonPoseEstimator;
+
 
  
 
@@ -49,6 +57,7 @@ public class Camera extends SubsystemBase{
 
     public void setData(){
         
+        // Optional<EstimatedRobotPose> estimatedPoseResult = photonPoseEstimator.update(data);
         
         var results = camera.getAllUnreadResults();
         if (!results.isEmpty()) {
@@ -61,6 +70,7 @@ public class Camera extends SubsystemBase{
                     if ((target.getFiducialId() > 5 && target.getFiducialId() < 12) || (target.getFiducialId() > 16 && target.getFiducialId() < 23)) {
                         // Found Tag 7, record its information
                         targetYaw = target.getYaw();
+                        // osition = 
                         targetRange =
                                 PhotonUtils.calculateDistanceToTargetMeters(
                                         Units.inchesToMeters(10), // Measured with a tape measure, or in CAD.

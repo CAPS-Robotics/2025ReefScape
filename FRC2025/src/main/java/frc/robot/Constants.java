@@ -13,7 +13,7 @@ import edu.wpi.first.math.util.Units;
  *
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
- */
+ **/
 public final class Constants {
 
 
@@ -41,9 +41,9 @@ public final class Constants {
 
     //Elevator Position(rotations)
     public static final double kLevel_1 = 0;
-    public static final double kLevel_2 = 28;
-    public static final double kLevel_3 = 47;
-    public static final double kLevel_4 = 78;
+    public static final double kLevel_2 = 30;
+    public static final double kLevel_3 = 49;
+    public static final double kLevel_4 = 80;
 
 
 
@@ -74,7 +74,7 @@ public final class Constants {
 
 
     //Dampners 
-    public static final double kSwerveDampner = 0.2;
+    public static final double kSwerveDampner = 0.40;
     public static final double kElevatorDampner = 0.5;
     public static final double kClimbDampner = 0.5;
     public static final double kAlgaeDampner = 0.2;

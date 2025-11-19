@@ -33,7 +33,7 @@ public class ServoSubsystem extends SubsystemBase {
   public void closedServo(){
     bucketServo.setAngle(180);
     
-
+    System.out.println("Closed");
   }
 
   @Override

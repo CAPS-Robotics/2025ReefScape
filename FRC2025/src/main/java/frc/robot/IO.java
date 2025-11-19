@@ -7,6 +7,7 @@ package frc.robot;
 import javax.imageio.plugins.jpeg.JPEGHuffmanTable;
 
 import edu.wpi.first.wpilibj.Joystick;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -19,13 +20,13 @@ public class IO {
     public XboxController controlController = new XboxController(1);
 
     //Elevator Buttons
-    public JoystickButton l2Button = new JoystickButton(controlController, 1);
+    public JoystickButton l2Button = new JoystickButton(controlController, 3);
     public JoystickButton l3Button = new JoystickButton(controlController, 4);
-    public JoystickButton l4Button = new JoystickButton(controlController, 5);
+    public JoystickButton l4Button = new JoystickButton(controlController, 1);
     public JoystickButton zeroButton = new JoystickButton(controlController, 2);
 
     // Servo
-    public JoystickButton servoButton = new JoystickButton(controlController, 3);
+    public JoystickButton servoButton = new JoystickButton(controlController, 6);
 
     //Algae
     // public JoystickButton raiseButton = new JoystickButton(controlController, 7);
@@ -37,7 +38,7 @@ public class IO {
     public JoystickButton AlignButton = new JoystickButton(driveController, 1);
     public JoystickButton AlignLeftButton = new JoystickButton(driveController, 5);
     public JoystickButton AlignRightButton = new JoystickButton(driveController, 6);
-
+   
 
     
 

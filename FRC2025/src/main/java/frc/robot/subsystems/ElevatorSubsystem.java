@@ -20,7 +20,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   public SparkFlex elevatorMotor = new SparkFlex(Constants.kElevatorMotor, MotorType.kBrushless);
 
   public RelativeEncoder elevatorMotorEncoder = elevatorMotor.getEncoder();
-  // public Servo bucketServo = new Servo(0);
+  public Servo bucketServo = new Servo(1);
   
   //figure out distance of one rotation 88of the axle
 
@@ -31,13 +31,15 @@ public class ElevatorSubsystem extends SubsystemBase {
   public DigitalInput bottomlimitSwitch = new DigitalInput(0);
   public DigitalInput toplimitSwitch = new DigitalInput(1);
 
+  public boolean HoodState = false;
+
  
 
   public ElevatorSubsystem()
   {
     elevatorMotor.set(0);
     elevatorMotorEncoder.setPosition(0);
-    // setDefaultCommand(new RunCommand(()-> Robot.elevator.closedServo(), this ));
+     setDefaultCommand(new RunCommand(()-> Robot.elevator.closedServo(), this ));
     setDefaultCommand(new RunCommand(()-> Robot.elevator.getEncoder(), this ));
     setDefaultCommand(new RunCommand(()-> Robot.elevator.setSpeed(0.0375), this));
     
@@ -141,10 +143,8 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
           
           elevatorMotor.set(0);
           System.out.println("Bottom Limit Switch Pressed");
+          HoodState = true;
           elevatorMotorEncoder.setPosition(0);
-         
-
-          
         }
 
       } else if (motorSpeed == 0) {
@@ -158,20 +158,20 @@ System.out.println("Position!!!!!!!!!!!!!!!!");
     }
 
 
-    // public void releaseServo(){
+    public void releaseServo(){
 
-    //   bucketServo.setAngle(0);
+      bucketServo.setAngle(0);
 
-    //   System.out.println(bucketServo.get());
-    //   System.out.println("Released");
+      System.out.println(bucketServo.get());
+      System.out.println("Released");
 
-    // }
+    }
 
-    // public void closedServo(){
-    //   bucketServo.setAngle(180);
+    public void closedServo(){
+      bucketServo.setAngle(180);
       
 
-    // }
+    }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

@@ -19,6 +19,7 @@ import frc.robot.Constants;
   
 /** Add your docs here. */
 public class MMRCommands {
+
     //Algae Commands
     // public static RunCommand ForwardAlgae = new RunCommand(()-> Robot.algae.RemoveAlgae(1), Robot.algae);
     // public static RunCommand ReverseAlgae = new RunCommand(()-> Robot.algae.resetArm(), Robot.algae);
@@ -26,18 +27,24 @@ public class MMRCommands {
     // public static RunCommand Reset = new RunCommand(()-> Robot.algae.ResetArm(2.4), Robot.algae);
 
     //Elevator Commands
-    public static RunCommand raiseToL2 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_2), Robot.elevator);
-    public static RunCommand raiseToL3 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_3), Robot.elevator);
-    public static RunCommand raiseToL4 = new RunCommand(()-> Robot.elevator.raiseTo(Constants.kLevel_4), Robot.elevator);
+    // public static RunCommand raiseToL2 = new RunCommand(()->{ Robot.servo.closedServo(); Robot.elevator.raiseTo(Constants.kLevel_2);}, Robot.elevator);
+    // public static RunCommand raiseToL3 = new RunCommand(()->{ Robot.servo.closedServo(); Robot.elevator.raiseTo(Constants.kLevel_3);}, Robot.elevator);
+    // public static RunCommand raiseToL4 = new RunCommand(()->{Robot.servo.closedServo(); Robot.elevator.raiseTo(Constants.kLevel_4);}, Robot.elevator);
+
+    public static RunCommand raiseToL2 = new RunCommand(()->{Robot.elevator.raiseTo(Constants.kLevel_2);},Robot.elevator);
+    public static RunCommand raiseToL3 = new RunCommand(()->{Robot.elevator.raiseTo(Constants.kLevel_3);}, Robot.elevator);
+    public static RunCommand raiseToL4 = new RunCommand(()->{Robot.elevator.raiseTo(Constants.kLevel_4);}, Robot.elevator);
 
     public static RunCommand raiseElevator = new RunCommand(()-> Robot.elevator.raise(), Robot.elevator);
     public static RunCommand lowerElevator = new RunCommand(()-> Robot.elevator.lower(), Robot.elevator);
 
-    public static RunCommand zero = new RunCommand(()-> Robot.elevator.zero(), Robot.elevator);
+    public static RunCommand zero = new RunCommand(()-> {Robot.elevator.zero();}, Robot.elevator);
     
     //Servo Commands
     public static InstantCommand releaseServo = new InstantCommand(()-> Robot.servo.releaseServo(), Robot.servo);
     public static InstantCommand closeServo = new InstantCommand(()-> Robot.servo.closedServo(), Robot.servo);
+
+
     
     // //Climb Commands
     // public static RunCommand raiseClimb = new RunCommand(()-> Robot.climb.raise(), Robot.climb);
