@@ -65,6 +65,7 @@ public class MMRCommands {
     public static RunCommand Align = new RunCommand(()-> Robot.swerveTrain.Align(), Robot.swerveTrain);
     public static RunCommand AlignLeft = new RunCommand(()-> Robot.swerveTrain.AlignLeft(), Robot.swerveTrain);
     public static RunCommand AlignRight = new RunCommand(()-> Robot.swerveTrain.AlignRight(), Robot.swerveTrain);
+    public static RunCommand resetToFusedHeading = new RunCommand(()-> Robot.swerveTrain.resetHeading(0, 0, 0), Robot.swerveTrain);
 
     //Auto
     public static InstantCommand calcDistance = new InstantCommand(()-> Robot.swerveTrain.calcStartingDistance(88), Robot.swerveTrain);

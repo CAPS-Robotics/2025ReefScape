@@ -53,9 +53,9 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
     AHRS Navx = new AHRS(NavXComType.kMXP_SPI);
     // Uncomment to convert from double to Rotations2D
     Rotation2d Yaw;
-    PIDController ResetToFusedHeading = new PIDController(0, 0, 0);
+    PIDController ResetToFusedHeading = new PIDController(10, 0, 0);
 
-    Pose2d robotPose2d = new Pose2d();
+    Pose2d initialrobotPose2d = new Pose2d();
     
 
     Translation2d frontLeft = new Translation2d((Constants.chasisWidth/2), (Constants.chasisLength/2));
@@ -175,35 +175,36 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
     
             return position;
         }
+
     
         public void driveSwerve(Joystick driveController){
-                            // System.out.println("Swerve Drive");
-
-                            Yaw = Navx.getRotation2d();
-                
-                            
-                    
-                            // FLCurrentAngle = new Rotation2d(frontLeftModule.encoder.get()/1.0*2*Math.PI);
-                            // FRCurrentAngle = new Rotation2d(frontRightModule.encoder.get()/1.0*2*Math.PI);
-                            // BLCurrentAngle = new Rotation2d(backLeftModule.encoder.get()/1.0*2*Math.PI);
-                            // BRCurrentAngle = new Rotation2d(backRightModule.encoder.get()/1.0*2*Math.PI);
-                    
-                            //Optimization
-                            // frontLeftModule.moduleState.optimize(FLCurrentAngle);
-                            // frontRightModule.moduleState.optimize(FRCurrentAngle);
-                            // backLeftModule.moduleState.optimize(BLCurrentAngle);
-                            // backRightModule.moduleState.optimize(BRCurrentAngle);
-                    
-                    
-                    
-                            double velocityX = -1 * driveController.getX();
-                            double velocityY = 1 * driveController.getY();
-                            
-                            double omega = 1 * driveController.getZ();
+                                                    // System.out.println("Swerve Drive");
+                        
+                                                    Yaw = Navx.getRotation2d();
+                                        
+                                                    
+                                            
+                                                    // FLCurrentAngle = new Rotation2d(frontLeftModule.encoder.get()/1.0*2*Math.PI);
+                                                    // FRCurrentAngle = new Rotation2d(frontRightModule.encoder.get()/1.0*2*Math.PI);
+                                                    // BLCurrentAngle = new Rotation2d(backLeftModule.encoder.get()/1.0*2*Math.PI);
+                                                    // BRCurrentAngle = new Rotation2d(backRightModule.encoder.get()/1.0*2*Math.PI);
+                                            
+                                                    //Optimization
+                                                    // frontLeftModule.moduleState.optimize(FLCurrentAngle);
+                                                    // frontRightModule.moduleState.optimize(FRCurrentAngle);
+                                                    // backLeftModule.moduleState.optimize(BLCurrentAngle);
+                                                    // backRightModule.moduleState.optimize(BRCurrentAngle);
+                                            
+                                            
+                                            
+                                                    double velocityX = -1 * driveController.getY();
+                                                    double velocityY = 1 * driveController.getX();
+                                                    
+                                                    double omega = 1 * driveController.getZ();
                     // if (driveController.getLeftTriggerAxis() > 0.1){
                     //     omega = -1 * driveController.getLeftTriggerAxis();
                     // }else if(driveController.getRightTriggerAxis() > 0.1){
-                    //     omega = driveController.getRightTriggerAxis();
+                    //     omega = driveController.getRightTriggerAxis(); 
                     // }
                     
             // System.out.println("Converted Yaw" + convertedYaw + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -216,7 +217,7 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
             System.out.println("Velocity X: " + velocityX);
             System.out.println("Velocity Y: "+ velocityY);
             System.out.println("Omega: "+omega);
-            // System.out.println("Yaw2"+Yaw2+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println("FUSEDHEADING"+Navx.getFusedHeading()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
     
             chassisSpeeds = new ChassisSpeeds();
@@ -245,13 +246,13 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
 
         public void calcStartingDistance(double StartingDistanceFromAprilTag){
 
-            distanceAprilTag = StartingDistanceFromAprilTag*Math.tan(Camera.getTargetYaw());
+            distanceAprilTag = StartingDistanceFromAprilTag*Math.tan(PoseEstimatorSubsystem.getTargetYaw());
 
         }
         public void driveAuto(double kPforDistance){
             System.out.println("IN THE AUTO DRIVE");
 
-            double distanceToAprilTag = distanceAprilTag/Math.tan(Camera.getTargetYaw());
+            double distanceToAprilTag = distanceAprilTag/Math.tan(PoseEstimatorSubsystem.getTargetYaw());
 
 
 
@@ -265,8 +266,8 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
     
         public void alignWithAprilTag(double kPforDegreeAlign, double desired_distance, double kPforStrafeAlign, double targetRange){
            
-            SmartDashboard.putNumber("align target Yaw", Camera.getTargetYaw());
-            double strafe = (Camera.getTargetYaw())*kPforDegreeAlign*Constants.kSwerveDampner;
+            SmartDashboard.putNumber("align target Yaw", PoseEstimatorSubsystem.getTargetYaw());
+            double strafe = (PoseEstimatorSubsystem.getTargetYaw())*kPforDegreeAlign*Constants.kSwerveDampner;
         
             double omega =(desired_distance - targetRange)*kPforStrafeAlign*Constants.kSwerveDampner;
             
@@ -276,10 +277,11 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
             
         }
 
+        
         public void alignWithAprilTag(double DesiredYaw, double kPforDegreeAlign, double desired_distance, double kPforStrafeAlign, double targetRange){
            
-            SmartDashboard.putNumber("align target Yaw", Camera.getTargetYaw());
-            double strafe = (Camera.getTargetYaw()-DesiredYaw)*kPforDegreeAlign*Constants.kSwerveDampner;
+            SmartDashboard.putNumber("align target Yaw", PoseEstimatorSubsystem.getTargetYaw());
+            double strafe = (PoseEstimatorSubsystem.getTargetYaw()-DesiredYaw)*kPforDegreeAlign*Constants.kSwerveDampner;
         
             double omega =(desired_distance - targetRange)*kPforStrafeAlign*Constants.kSwerveDampner;
             
@@ -295,12 +297,12 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
         }
 
         public void AlignLeft(){
-            alignWithAprilTag( 25, 0.1, 0, 0.5, Camera.targetRange);
+            alignWithAprilTag( 25, 0.1, 0, 0.5, PoseEstimatorSubsystem.targetRange);
             
         }
 
         public void AlignRight(){
-            alignWithAprilTag(-20, 0.1, 0, 0.5, Camera.targetRange);
+            alignWithAprilTag(-20, 0.1, 0, 0.5, PoseEstimatorSubsystem.targetRange);
         }
 
             
@@ -326,6 +328,10 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
             double currentHeading = Navx.getFusedHeading();
 
             double rotationValue = ResetToFusedHeading.calculate(currentHeading, targetHeading);
+            System.out.println("y-VELO:"+veloForward+"!!!!!!!!!!!!!!!!!!");
+            System.out.println("X-VELO:"+veloStrafe+"!!!!!!!!!!!!!!!!!!");
+            System.out.println("turnVELO:"+rotationValue+"!!!!!!!!!!!!!!!!!!");
+            
 
             chassisSpeeds = new ChassisSpeeds(veloForward, veloStrafe, rotationValue);
             setSpeed(chassisSpeeds);
@@ -360,8 +366,31 @@ public class SwerveDriveTrainSubsystem extends SubsystemBase{
             backRightModule.setModulePosition();
 
             // swerveDrivePoseEstimator.update(getCurrentYaw(), updatePositions());
-        
+            System.out.println("Fused Heading "+Navx.getFusedHeading()+" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println("Current Yaw: "+ Navx.getYaw()+" !!!!!!!!!!!!!");
+
+         
         }
 
+        public SwerveDriveKinematics getSwerveKinematics(){
+            return this.getSwerveKinematics();
+        }
 
+        public SwerveModulePosition[] getStates(){
+            SwerveModulePosition[] positionsArrays = new SwerveModulePosition[4];
+            positionsArrays[0] = this.frontLeftModule.getModulePosition();
+            positionsArrays[1] = this.frontRightModule.getModulePosition();
+            positionsArrays[2] = this.backLeftModule.getModulePosition();
+            positionsArrays[3] = this.backRightModule.getModulePosition();
+
+            return positionsArrays;
+        }
+
+        public Rotation2d getcurrentRotation2d(){
+            return Navx.getRotation2d();
+        }
+
+        public Pose2d getintialPose2d(){
+            return initialrobotPose2d;
+        }
 }

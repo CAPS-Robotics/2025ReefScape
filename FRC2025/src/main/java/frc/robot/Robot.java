@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
-import frc.robot.subsystems.Camera;
+import frc.robot.subsystems.PoseEstimatorSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.MecanumDriveTrainSubsystem;
@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command Command2;
   private Command ReleaseServo;
+  private Command ResetTeleop; 
   private boolean autoServoFlag = false;
   private int cnt =0;
   private Command Align;
@@ -52,7 +53,7 @@ public class Robot extends TimedRobot {
   public static SwerveDriveTrainSubsystem swerveTrain = new SwerveDriveTrainSubsystem();
   public static ElevatorSubsystem elevator = new ElevatorSubsystem();
   // public static ClimbSubsystem climb = new ClimbSubsystem();
-  public static Camera camera = new Camera("Front Camera");
+  public static PoseEstimatorSubsystem camera = new PoseEstimatorSubsystem("Front Camera");
   // public static AlgaeSubsystem algae = new AlgaeSubsystem();
   public NamedCommands AutoCommands = new NamedCommands();
     public static ServoSubsystem servo = new ServoSubsystem();
@@ -168,6 +169,11 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    // ResetTeleop = MMRCommands.resetToFusedHeading;
+    if (ResetTeleop != null) {
+      System.out.println("Inside auto-init!! RESET!!!!!!!!!!!!!!");
+      ResetTeleop.schedule();
+    }
     
   }
 

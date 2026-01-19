@@ -16,8 +16,10 @@ import frc.robot.commands.MMRCommands;
 /** Add your docs here. */
 public class IO {
 
-    public Joystick driveController = new Joystick(0);
+    // public Joystick driveController = new Joystick(0);
     public XboxController controlController = new XboxController(1);
+    public Joystick driveController = new Joystick(0);
+
 
     //Elevator Buttons
     public JoystickButton l2Button = new JoystickButton(controlController, 3);
@@ -35,9 +37,9 @@ public class IO {
     // public JoystickButton RatchetEngage = new JoystickButton(driveController, 8);
 
     // //Align 
-    public JoystickButton AlignButton = new JoystickButton(driveController, 1);
-    public JoystickButton AlignLeftButton = new JoystickButton(driveController, 5);
-    public JoystickButton AlignRightButton = new JoystickButton(driveController, 6);
+    // public JoystickButton AlignButton = new JoystickButton(driveController, 1);
+    // public JoystickButton AlignLeftButton = new JoystickButton(driveController, 5);
+    // public JoystickButton AlignRightButton = new JoystickButton(driveController, 6);
    
 
     
@@ -61,9 +63,9 @@ public class IO {
         // RatchetRelease.whileTrue(MMRCommands.RatchetDisable);
 
 
-        AlignButton.whileTrue(MMRCommands.Align);
-        AlignLeftButton.whileTrue(MMRCommands.AlignLeft);
-        AlignRightButton.whileTrue(MMRCommands.AlignRight);
+        // AlignButton.whileTrue(MMRCommands.Align);
+        // AlignLeftButton.whileTrue(MMRCommands.AlignLeft);
+        // AlignRightButton.whileTrue(MMRCommands.AlignRight);
 
 
         

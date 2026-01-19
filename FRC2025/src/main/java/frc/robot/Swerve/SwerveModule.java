@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.AnalogEncoder;
+import frc.robot.Constants;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkFlex;
@@ -158,8 +159,8 @@ public class SwerveModule {
         }
 
         //Set Steering Speed
-        steeringMotor.set(invert*pidSpeed*0.5);
-        driveMotor.set(reversed*moduleState.speedMetersPerSecond*0.5);
+        steeringMotor.set(invert*pidSpeed*Constants.kSwerveDampner);
+        driveMotor.set(reversed*moduleState.speedMetersPerSecond*Constants.kSwerveDampner);
 
        
         
